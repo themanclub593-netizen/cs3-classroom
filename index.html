@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>ห้องเรียนวิทยาการคำนวณ ม.3</title>
+<meta name="description" content="รายวิชาวิทยาการคำนวณ 3 (ว23182) โรงเรียนนครระยองวิทยาคม (วัดโขดใต้)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Crect width=%2224%22 height=%2224%22 rx=%225%22 fill=%22%231f6b57%22/%3E%3Cpath d=%22M8 7l-5 5 5 5M16 7l5 5-5 5%22 stroke=%22white%22 stroke-width=%222%22 fill=%22none%22/%3E%3C/svg%3E">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f3ee; --paper:#ffffff; --ink:#1d2421; --ink2:#55605b; --line:#e3e0d8;
+  --pri:#1f6b57; --pri2:#e5f0ec; --acc:#d9922e; --acc2:#fbf0df;
+  --ok:#1f7a4d; --ok2:#e3f3ea; --info:#2b5fa8; --info2:#e6eefa; --warn:#a86a12; --warn2:#fbf0dc;
+  --bad:#b8402a; --bad2:#fbe7e2; --mute:#8a918d; --mute2:#efede8;
+  --r:14px; --sh:0 1px 2px rgba(20,30,25,.06),0 4px 14px rgba(20,30,25,.05);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans Thai',system-ui,sans-serif;font-size:15px;line-height:1.55}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--pri)}
+.wrap{max-width:980px;margin:0 auto;padding:16px 16px 96px}
+.top{background:var(--pri);color:#fff;padding:14px 16px 18px}
+.top .in{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.top h1{font-size:17px;margin:0;font-weight:600;letter-spacing:.2px}
+.top small{opacity:.8;display:block;font-size:12.5px}
+.top .sp{flex:1}
+.top button{background:rgba(255,255,255,.14);border:0;color:#fff;border-radius:10px;padding:7px 12px;cursor:pointer}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:16px;margin-bottom:14px}
+.card h2{font-size:16px;margin:0 0 10px;font-weight:600}
+.card h3{font-size:15px;margin:0 0 6px;font-weight:600}
+.muted{color:var(--ink2)}
+.small{font-size:13px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.grow{flex:1;min-width:0}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:520px){.g3{gap:8px}.stat{padding:10px}.stat b{font-size:19px}.stat span{font-size:11.5px}}
+.btn{border:0;border-radius:11px;padding:10px 16px;background:var(--pri);color:#fff;font-weight:600;cursor:pointer}
+.btn:disabled{opacity:.5;cursor:default}
+.btn.ghost{background:transparent;color:var(--pri);border:1px solid var(--pri)}
+.btn.soft{background:var(--pri2);color:var(--pri)}
+.btn.warn{background:var(--acc)}
+.btn.sm{padding:6px 11px;font-size:13px;border-radius:9px}
+.btn.block{width:100%}
+label{display:block;font-size:13.5px;color:var(--ink2);margin:10px 0 4px}
+input[type=text],input[type=number],input[type=password],input[type=url],select,textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:11px;background:#fff;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--pri);box-shadow:0 0 0 3px var(--pri2)}
+.chip{display:inline-block;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.s-graded{background:var(--ok2);color:var(--ok)} .s-submitted{background:var(--info2);color:var(--info)}
+.s-revise{background:var(--warn2);color:var(--warn)} .s-late{background:var(--bad2);color:var(--bad)}
+.s-practice{background:var(--pri2);color:var(--pri)} .s-pending{background:var(--acc2);color:var(--warn)} .s-upcoming{background:var(--mute2);color:var(--mute)}
+.stat{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.stat b{display:block;font-size:24px;line-height:1.2}
+.stat span{font-size:12.5px;color:var(--ink2)}
+.bar{height:8px;background:var(--mute2);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--pri);border-radius:99px}
+.list .item{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.list .item:first-child{border-top:0}
+.nav{position:fixed;left:0;right:0;bottom:0;background:var(--paper);border-top:1px solid var(--line);display:flex;justify-content:center;z-index:5}
+.nav .in{display:flex;max-width:980px;width:100%}
+.nav button{flex:1;border:0;background:none;padding:9px 4px 11px;font-size:12.5px;color:var(--ink2);cursor:pointer}
+.nav button.on{color:var(--pri);font-weight:600}
+.nav svg{display:block;margin:0 auto 2px;width:22px;height:22px}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin:0 0 14px;padding-bottom:2px}
+.tabs button{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:7px 14px;cursor:pointer;white-space:nowrap}
+.tabs button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.alert{border-radius:12px;padding:12px 14px;margin-bottom:14px}
+.alert.bad{background:var(--bad2);color:var(--bad)} .alert.info{background:var(--pri2);color:var(--pri)} .alert.warn{background:var(--warn2);color:var(--warn)}
+.video{position:relative;padding-top:56.25%;border-radius:12px;overflow:hidden;background:#000;margin:10px 0}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+ul.pts{padding-left:20px;margin:6px 0} ul.pts li{margin:3px 0}
+.unit{border-left:4px solid var(--pri);padding-left:12px;margin:18px 0 8px}
+.unit small{color:var(--ink2)}
+.lesson{display:flex;gap:12px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--paper);margin-bottom:8px;cursor:pointer;width:100%;text-align:left}
+.badge,.lesson .code{font-weight:700;color:var(--pri);background:var(--pri2);border-radius:9px;padding:6px 9px;font-size:13px}
+.q{font-size:16.5px;font-weight:500;margin:6px 0 14px}
+.opt{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:12px;margin-bottom:9px;cursor:pointer}
+.opt .k{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-weight:600;font-size:13px}
+.opt.on{border-color:var(--pri);background:var(--pri2)} .opt.on .k{background:var(--pri);color:#fff;border-color:var(--pri)}
+.opt.right{border-color:var(--ok);background:var(--ok2)} .opt.wrong{border-color:var(--bad);background:var(--bad2)}
+.dots{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.dots button{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:13px}
+.dots button.ans{background:var(--pri2);border-color:var(--pri);color:var(--pri)} .dots button.cur{outline:2px solid var(--acc)}
+.timer{font-variant-numeric:tabular-nums;font-weight:700;background:rgba(255,255,255,.16);padding:6px 11px;border-radius:10px}
+.timer.low{background:var(--bad)}
+table{border-collapse:collapse;width:100%}
+.tbl{overflow:auto;border:1px solid var(--line);border-radius:12px;background:#fff;max-height:70vh}
+.tbl table{font-size:13.5px}
+.tbl th,.tbl td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap}
+.tbl th{background:#f3f1ec;position:sticky;top:0;z-index:1;font-weight:600}
+.tbl td.l,.tbl th.l{text-align:left}
+.tbl .sticky{position:sticky;left:0;background:#fff;z-index:1}
+.tbl th.sticky{z-index:2;background:#f3f1ec}
+.cell{width:56px;padding:5px;border:1px solid transparent;border-radius:7px;text-align:center;background:transparent}
+.cell:hover{border-color:var(--line)} .cell:focus{border-color:var(--pri);background:#fff;outline:none}
+.cell.late{background:var(--bad2)} .cell.submitted{background:var(--info2)} .cell.saving{opacity:.4} .cell.err{outline:2px solid var(--bad)}
+.heat{font-weight:600;border-radius:7px;padding:4px 6px;display:inline-block;min-width:44px}
+.modal{position:fixed;inset:0;background:rgba(20,25,22,.45);display:flex;align-items:flex-end;justify-content:center;z-index:20}
+.modal .box{background:var(--paper);width:100%;max-width:560px;max-height:92vh;overflow:auto;border-radius:18px 18px 0 0;padding:18px}
+@media(min-width:700px){.modal{align-items:center}.modal .box{border-radius:18px}}
+.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;z-index:30;font-size:14px;max-width:90vw}
+.center{display:grid;place-items:center;min-height:70vh}
+.spin{width:28px;height:28px;border:3px solid var(--pri2);border-top-color:var(--pri);border-radius:50%;animation:sp 0.8s linear infinite;margin:30px auto}
+@keyframes sp{to{transform:rotate(360deg)}}
+.big{font-size:44px;font-weight:700;color:var(--pri);line-height:1}
+textarea.copy{min-height:150px;font-size:13.5px}
+.right{text-align:right}
+.tlink{background:none;border:0;padding:0;font:inherit;color:inherit;text-align:left;cursor:pointer}
+.tlink:hover .ttl{color:var(--pri);text-decoration:underline}
+.sec{margin-top:16px} .sec h3{display:flex;align-items:center;gap:8px}
+.sec h3 .n{width:22px;height:22px;border-radius:50%;background:var(--pri2);color:var(--pri);display:grid;place-items:center;font-size:12px}
+ol.steps{padding-left:22px;margin:6px 0} ol.steps li{margin:6px 0}
+.rub{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.rub div{padding:9px 12px;border-top:1px solid var(--line)} .rub div:first-child{border-top:0}
+.rub div.tot{background:var(--acc2);font-weight:600}
+.lv{display:inline-block;font-size:12px;padding:2px 8px;border-radius:999px;background:var(--pri2);color:var(--pri);margin:4px 4px 0 0}
+.rpick{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0}
+.rpick .rrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:6px 0;border-top:1px dashed var(--line)} .rpick .rrow:first-child{border-top:0}
+.rpick .rname{flex:1;min-width:180px;font-size:13.5px}
+.rpick button{border:1px solid var(--line);background:#fff;border-radius:9px;padding:5px 10px;cursor:pointer;font-size:13px}
+.rpick button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin:12px 0}
+.meta div{background:var(--bg);border-radius:10px;padding:8px 10px} .meta span{display:block;font-size:12px;color:var(--ink2)}
+.hide{display:none!important}
+/* ชุดฝึกทักษะ */
+.mono,pre.pcode,.editor,.blk,.pout{font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,'IBM Plex Sans Thai',monospace}
+pre.pcode{margin:0 0 12px;background:#f3f5f4;border:1px solid var(--line);border-radius:10px;padding:10px 12px;overflow-x:auto;font-size:14px;line-height:1.6;white-space:pre}
+pre.pout{margin:4px 0;white-space:pre-wrap;font-size:13.5px}
+textarea.editor{min-height:200px;font-size:14.5px;line-height:1.6;tab-size:4;white-space:pre;overflow-x:auto;resize:vertical;background:#fbfcfb}
+.keys{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 6px}
+.keys button{min-width:42px;height:36px;padding:0 9px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer;font-family:ui-monospace,Menlo,monospace;font-weight:600}
+.zone{display:flex;flex-direction:column;gap:6px;min-height:50px;padding:8px;border:1.5px dashed var(--line);border-radius:10px}
+.zone.mine{border-style:solid;border-color:var(--acc);background:var(--acc2)}
+.blk{white-space:pre;text-align:left;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer;font-size:14px;overflow-x:auto}
+.pdots button.pok{background:var(--ok);border-color:var(--ok);color:#fff}
+.pdots button.pno{border:1.5px dashed var(--bad);color:var(--bad)}
+.pdots button.psum{width:auto;padding:0 12px}
+.ptests td.mono{white-space:pre;font-size:13px}
+.ptests th,.ptests td{padding:6px 5px}
+.pp{color:var(--ok);font-weight:600} .pf{color:var(--bad);font-weight:600}
+.pcell{border:0;border-radius:7px;padding:3px 7px;cursor:pointer;font-weight:700;font-size:13px}
+.pcell.ok{background:var(--ok2);color:var(--ok)} .pcell.no{background:var(--bad2);color:var(--bad)}
+.pcell sub{font-weight:500;font-size:10.5px;margin-left:1px}
+</style>
+</head>
+<body>
+<script>window.CC_API_URL = "https://script.google.com/macros/s/AKfycby5cG10M7ww24sfHaHIBwwwVZqfS1xLTWRrmNST1zhbmBQtLNJ_SFJdEbHSWzm7hQ7U/exec";</script>
+<div id="app"><div class="spin"></div></div>
+<script>
+var MODE = 'student';
+var APP_NAME = 'ห้องเรียนวิทยาการคำนวณ ม.3';
+/* หน้าเว็บแยก (GitHub Pages): ส่งคำขอตรงไปที่ Apps Script แบบไม่แนบบัญชี Google */
+var API_URL = window.CC_API_URL || '';
+if (API_URL) { MODE = /[?&]mode=teacher\b/.test(location.search) ? 'teacher' : 'student'; APP_NAME = window.CC_APP_NAME || 'ห้องเรียนวิทยาการคำนวณ ม.3'; }
+var S = { token: null, tToken: null, boot: null, home: null, view: 'home', lesson: null, quiz: null, t: { tab: 'overview' } };
+var UNIT_ICON = '';
+
+/* ---------- utils ---------- */
+function $(sel){ return document.querySelector(sel); }
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function store(k, v){ try { if (v === undefined) return localStorage.getItem(k); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch(e){ return null; } }
+function fmtNum(x){ return (x === null || x === undefined || x === '') ? '–' : (Math.round(Number(x)*100)/100).toString(); }
+function fmtDate(iso){ if(!iso) return ''; var d = new Date(iso); if (isNaN(d)) return ''; return d.toLocaleDateString('th-TH', { day:'numeric', month:'short', year:'2-digit' }); }
+function fmtTime(iso){ if(!iso) return ''; var d = new Date(iso); return isNaN(d) ? '' : d.toLocaleString('th-TH', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' }); }
+function toast(msg){ var t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(function(){ t.remove(); }, 2800); }
+function loading(){ $('#app').innerHTML = '<div class="spin"></div>'; }
+var STATUS = { practice:'แบบฝึก ทำได้ไม่จำกัด', graded:'ได้คะแนนแล้ว', submitted:'ส่งแล้ว รอตรวจ', revise:'ให้แก้ไข', late:'ค้างส่ง', pending:'ยังไม่ส่ง', upcoming:'ยังไม่เปิด' };
+function chip(s){ return '<span class="chip s-' + s + '">' + (STATUS[s] || s) + '</span>'; }
+var ICONS = {
+  home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>',
+  lessons:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/><path d="M9 7h6"/></svg>',
+  tasks:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>',
+  scores:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+  practice:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 4l-3 16"/></svg>'
+};
+
+var SAFE_RETRY = { boot:1, me:1, pSets:1, pOpen:1, tOverview:1, tClass:1, tFollow:1, tSubmissions:1, tTasks:1, tQuizReport:1, tPractice:1, tPracticeAnswer:1 };
+function expired(){
+  // แจ้ง "หมดเวลา" เฉพาะตอนกำลังใช้งานอยู่ ไม่แจ้งตอนเพิ่งเปิดหน้าแล้วโทเคนเก่าหมดอายุ (ทำให้ดูเหมือนระบบเสีย)
+  if (S.authed) toast('หมดเวลาการใช้งาน กรุณาเข้าสู่ระบบใหม่');
+  S.authed = false;
+  if (MODE === 'teacher' || S.tToken) { S.tToken = null; store('cc_t', null); } else { S.token = null; store('cc_s', null); }
+  route();
+}
+function handleResult(s, payload, resolve, reject){
+  var r = JSON.parse(s);
+  if (r.ok) { if (payload && payload.token) S.authed = true; return resolve(r.data); }
+  if (r.error === 'SESSION_EXPIRED') { var wasAuthed = S.authed; expired(); var ex = new Error('หมดเวลาการใช้งาน'); ex.silent = true; ex.wasAuthed = wasAuthed; return reject(ex); }
+  reject(new Error(r.error));
+}
+function callFetch(action, payload, tries){
+  return fetch(API_URL, { method: 'POST', credentials: 'omit', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: action, payload: payload || {} }) })
+    .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+    .then(function(t){ return new Promise(function(resolve, reject){ handleResult(t, payload, resolve, reject); }); }, function(e){
+      // เน็ตสะดุด: ลองซ้ำอัตโนมัติ 1 ครั้งเฉพาะคำสั่งที่อ่านข้อมูลอย่างเดียว (กันบันทึกซ้ำ)
+      if (SAFE_RETRY[action] && !tries) return new Promise(function(res){ setTimeout(res, 800); }).then(function(){ return callFetch(action, payload, 1); });
+      throw new Error('เชื่อมต่อไม่สำเร็จ กรุณาตรวจอินเทอร์เน็ตแล้วลองใหม่');
+    });
+}
+function call(action, payload){
+  if (API_URL) return callFetch(action, payload, 0);
+  return new Promise(function(resolve, reject){
+    google.script.run
+      .withSuccessHandler(function(s){
+        handleResult(s, payload, resolve, reject);
+      })
+      .withFailureHandler(function(e){ reject(new Error(e && e.message || 'เชื่อมต่อไม่สำเร็จ กรุณาลองใหม่')); })
+      .api(action, payload || {});
+  });
+}
+function fail(e){ if (e && e.silent) return; toast(e.message || String(e)); }
+
+/* ---------- start ---------- */
+function start(){
+  S.token = store('cc_s'); S.tToken = store('cc_t');
+  call('boot').then(function(b){ S.boot = b; route(); }).catch(function(e){
+    $('#app').innerHTML = '<div class="wrap"><div class="alert bad">โหลดระบบไม่สำเร็จ: ' + esc(e.message) + '</div></div>';
+  });
+}
+function route(){
+  if (MODE === 'teacher') return S.tToken ? teacherShell() : teacherLogin();
+  if (S.tToken && S.view === 'teacher') return teacherShell();
+  if (!S.token) return loginView();
+  if (S.quiz) return quizView();
+  if (S.pset) return psetView();
+  studentShell();
+}
+function header(sub, right){
+  return '<div class="top"><div class="in"><div class="grow"><h1>' + esc(S.boot && S.boot.app || APP_NAME) + '</h1><small>' + esc(sub || '') + '</small></div>' + (right || '') + '</div></div>';
+}
+
+/* ================= STUDENT ================= */
+function loginView(){
+  var b = S.boot || {};
+  $('#app').innerHTML = header((b.course || '') + ' · ภาคเรียน ' + (b.term || '')) +
+    '<div class="wrap" style="max-width:440px"><div class="card" style="margin-top:20px">' +
+    '<h2>เข้าสู่ระบบนักเรียน</h2><p class="muted small" style="margin-top:0">ใช้เลขประจำตัวนักเรียน และเลขที่ในห้อง</p>' +
+    '<form id="lf"><label>เลขประจำตัวนักเรียน</label><input type="text" id="sid" inputmode="numeric" autocomplete="off" placeholder="เช่น 03960" required>' +
+    '<label>เลขที่</label><input type="number" id="sno" inputmode="numeric" placeholder="เช่น 1" required>' +
+    '<button class="btn block" style="margin-top:16px" id="lb">เข้าสู่ระบบ</button></form></div>' +
+    '<p class="muted small" style="text-align:center">' + esc(b.teacher || '') + ' · ' + esc(b.school || '') + '</p>' +
+    '<p style="text-align:center"><button class="btn ghost sm" onclick="S.view=\'teacher\';teacherLogin()">สำหรับครู</button></p></div>';
+  $('#lf').onsubmit = function(ev){
+    ev.preventDefault(); var btn = $('#lb'); btn.disabled = true; btn.textContent = 'กำลังตรวจสอบ...';
+    call('login', { id: $('#sid').value, no: $('#sno').value }).then(function(r){
+      S.token = r.token; store('cc_s', r.token); S.view = 'home'; loadHome();
+    }).catch(function(e){ fail(e); btn.disabled = false; btn.textContent = 'เข้าสู่ระบบ'; });
+  };
+}
+function logout(){ S.token = null; S.home = null; S.quiz = null; S.pset = null; store('cc_s', null); try { Object.keys(localStorage).forEach(function(k){ if (k.indexOf('cc_q_') === 0 || k.indexOf('cc_p_') === 0) localStorage.removeItem(k); }); } catch(e){} route(); }
+function loadHome(){
+  loading();
+  return call('me', { token: S.token }).then(function(h){ S.home = h; studentShell(); }).catch(fail);
+}
+function studentShell(){
+  if (!S.home) return loadHome();
+  var p = S.home.profile;
+  var nav = ['home','lessons','tasks','practice','scores'].map(function(k){
+    var lb = { home:'หน้าหลัก', lessons:'บทเรียน', tasks:'งาน/สอบ', practice:'ฝึกโค้ด', scores:'คะแนน' }[k];
+    return '<button class="' + (S.view === k || (k === 'tasks' && S.view === 'task') ? 'on' : '') + '" onclick="go(\'' + k + '\')">' + ICONS[k] + lb + '</button>';
+  }).join('');
+  var body = { home: homeView, lessons: lessonsView, tasks: tasksView, practice: practiceView, scores: scoresView, task: taskView }[S.view] || homeView;
+  $('#app').innerHTML = header(p.name + ' · ' + p.cls + ' เลขที่ ' + p.no, '<button onclick="logout()">ออก</button>') +
+    '<div class="wrap">' + body() + '</div><div class="nav"><div class="in">' + nav + '</div></div>';
+  window.scrollTo(0, 0);
+}
+function go(v){ S.view = v; S.lesson = null; studentShell(); }
+
+function homeView(){
+  var h = S.home;
+  var late = h.tasks.filter(function(t){ return t.status === 'late' || t.status === 'revise'; });
+  var todo = h.tasks.filter(function(t){ return t.status === 'pending'; });
+  var pct = h.possible ? Math.round(h.earned / h.possible * 100) : 0;
+  var out = '';
+  if (h.announce) out += '<div class="alert info">' + esc(h.announce) + '</div>';
+  if (late.length) out += '<div class="alert bad"><b>มีงานค้าง ' + late.length + ' งาน</b><br>' + late.map(function(t){ return '• ' + esc(t.title) + (t.status === 'revise' ? ' (ครูให้แก้ไข)' : ''); }).join('<br>') + '</div>';
+  out += '<div class="grid g3">' +
+    '<div class="stat"><span>คะแนนตอนนี้</span><b>' + fmtNum(h.earned) + '<small class="muted" style="font-size:14px"> / ' + fmtNum(h.possible) + '</small></b><div class="bar" style="margin-top:8px"><i style="width:' + pct + '%"></i></div></div>' +
+    '<div class="stat"><span>ร้อยละ</span><b>' + (h.possible ? pct + '%' : '–') + '</b><span>เกรด ≈ ' + (h.gradeNow === '' ? '–' : h.gradeNow) + '</span></div>' +
+    '<div class="stat"><span>งานที่เสร็จ</span><b>' + h.tasks.filter(function(t){ return t.status === 'graded' && t.col; }).length + ' / ' + h.tasks.filter(function(t){ return t.col; }).length + '</b><span>เต็ม ' + fmtNum(h.fullMax) + ' คะแนน</span></div></div>';
+  if (todo.length) {
+    out += '<div class="card"><h2>งานที่เปิดอยู่</h2><div class="list">' + todo.map(taskRow).join('') + '</div></div>';
+  }
+  var b = S.boot;
+  if (b && b.lessons.length) {
+    var vids = b.lessons.filter(function(l){ return l.video; });
+    out += '<div class="card"><h2>บทเรียนล่าสุด</h2><div class="list">' + vids.slice(0, 3).map(function(l){
+      return '<div class="item"><span class="badge">' + esc(l.code) + '</span><div class="grow">' + esc(l.title) + '<div class="muted small">หน่วยที่ ' + esc(l.unit) + ' ' + esc(l.unitTitle) + '</div></div><button class="btn soft sm" onclick="openLesson(\'' + esc(l.code) + '\')">ดู</button></div>';
+    }).join('') + '</div></div>';
+  }
+  return out;
+}
+function taskRow(t){
+  var act = taskAction(t);
+  var meta = [];
+  if (t.col) meta.push(esc(t.col) + (t.max ? ' (' + fmtNum(t.max) + ' คะแนน)' : '')); else meta.push('ไม่เก็บคะแนน');
+  if (t.due) meta.push('ส่งภายใน ' + fmtDate(t.due));
+  if (t.quiz && t.count) meta.push(t.count + ' ข้อ' + (t.minutes ? ' · ' + t.minutes + ' นาที' : ''));
+  if (t.quiz && t.attempts) meta.push('ทำแล้ว ' + t.attemptsUsed + '/' + t.attempts + ' ครั้ง');
+  var sc = (t.score !== null && t.score !== undefined) ? '<b>' + fmtNum(t.score) + '</b><span class="muted small">/' + fmtNum(t.max) + '</span>' : (t.col ? '' : (t.last ? '<span class="small muted">ล่าสุด ' + t.last.correct + '/' + t.last.total + '</span>' : ''));
+  return '<div class="item"><div class="grow"><button class="tlink" onclick="openTask(\'' + esc(t.id) + '\')"><span class="ttl">' + esc(t.title) + '</span> <span class="small" style="color:var(--pri)">รายละเอียด ›</span></button><div class="muted small">' + meta.join(' · ') + '</div>' +
+    (t.submission && t.submission.comment ? '<div class="small" style="color:var(--warn)">ครู: ' + esc(t.submission.comment) + '</div>' : '') +
+    '<div style="margin-top:4px">' + chip(t.status) + '</div></div><div class="right">' + sc + '<div style="margin-top:6px">' + act + '</div></div></div>';
+}
+function tasksView(){
+  var h = S.home;
+  var groups = [
+    ['ต้องทำ', h.tasks.filter(function(t){ return ['late','revise','pending'].indexOf(t.status) >= 0; })],
+    ['ส่งแล้ว / ได้คะแนนแล้ว', h.tasks.filter(function(t){ return ['graded','submitted'].indexOf(t.status) >= 0; })],
+    ['แบบฝึก (ไม่เก็บคะแนน)', h.tasks.filter(function(t){ return t.status === 'practice'; })],
+    ['ยังไม่เปิด', h.tasks.filter(function(t){ return t.status === 'upcoming'; })]
+  ];
+  return groups.filter(function(g){ return g[1].length; }).map(function(g){
+    return '<div class="card"><h2>' + g[0] + ' <span class="muted small">(' + g[1].length + ')</span></h2><div class="list">' + g[1].map(taskRow).join('') + '</div></div>';
+  }).join('') + '<p style="text-align:center"><button class="btn ghost sm" onclick="loadHome().then(function(){go(\'tasks\')})">รีเฟรชสถานะ</button></p>';
+}
+function scoresView(){
+  var h = S.home;
+  return '<div class="card"><h2>คะแนนรายวิชา</h2><div class="tbl" style="max-height:none"><table><thead><tr><th class="l">รายการ</th><th>ได้</th><th>เต็ม</th></tr></thead><tbody>' +
+    h.cols.map(function(c){ return '<tr><td class="l">' + esc(c.name) + '</td><td>' + (c.score === null ? '<span class="muted">–</span>' : '<b>' + fmtNum(c.score) + '</b>') + '</td><td>' + fmtNum(c.max) + '</td></tr>'; }).join('') +
+    '<tr><td class="l"><b>รวม</b></td><td><b>' + fmtNum(h.earned) + '</b></td><td>' + fmtNum(h.fullMax) + '</td></tr></tbody></table></div>' +
+    '<p class="muted small">เกรดคาดการณ์คิดจากสัดส่วนคะแนนที่ได้ เทียบกับคะแนนเต็มของงานที่ตรวจแล้ว (' + (h.gradeNow === '' ? '–' : h.gradeNow) + ') เกรดจริงคิดจากคะแนนรวมเต็ม 100 เมื่อจบภาคเรียน</p></div>';
+}
+
+/* lessons */
+function lessonsView(){
+  var b = S.boot;
+  if (S.lesson) return lessonDetail(S.lesson);
+  var units = {};
+  b.lessons.forEach(function(l){ (units[l.unit] = units[l.unit] || { title: l.unitTitle, items: [] }).items.push(l); });
+  var out = '';
+  if (b.playlist) out += '<div class="alert info small">ดูคลิปทั้งหมดใน <a href="' + esc(b.playlist) + '" target="_blank">Playlist YouTube ของครู</a></div>';
+  Object.keys(units).sort().forEach(function(u){
+    out += '<div class="unit"><b>หน่วยที่ ' + esc(u) + '</b> ' + esc(units[u].title) + '<br><small>' + units[u].items.length + ' แผน · ' + units[u].items.reduce(function(a, l){ return a + (Number(l.hours) || 0); }, 0) + ' ชั่วโมง</small></div>';
+    out += units[u].items.map(function(l){
+      return '<button class="lesson" onclick="openLesson(\'' + esc(l.code) + '\')"><span class="code">' + esc(l.code) + '</span><span class="grow">' + esc(l.title) + '<br><span class="muted small">' + (l.video ? '▶ มีคลิป · ' : '') + esc(l.hours) + ' ชม.' + (l.work ? ' · มีใบงาน' : '') + '</span></span><span class="muted">›</span></button>';
+    }).join('');
+  });
+  return out;
+}
+function openLesson(code){ S.view = 'lessons'; S.lesson = code; studentShell(); }
+function lessonDetail(code){
+  var l = S.boot.lessons.filter(function(x){ return x.code === code; })[0];
+  if (!l) return '';
+  return '<button class="btn ghost sm" onclick="S.lesson=null;studentShell()">‹ กลับ</button>' +
+    '<div class="card" style="margin-top:12px"><div class="muted small">หน่วยที่ ' + esc(l.unit) + ' ' + esc(l.unitTitle) + ' · แผนที่ ' + esc(l.code) + ' · ' + esc(l.hours) + ' ชั่วโมง</div><h2 style="font-size:19px;margin-top:4px">' + esc(l.title) + '</h2>' +
+    (l.video ? '<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/' + esc(l.video) + '?rel=0" allowfullscreen allow="accelerometer; encrypted-media; picture-in-picture"></iframe></div>' : '') +
+    '<h3>สาระสำคัญ</h3><p style="margin-top:0">' + esc(l.concept) + '</p>' +
+    (l.points.length ? '<h3>ประเด็นที่ต้องรู้</h3><ul class="pts">' + l.points.map(function(p){ return '<li>' + esc(p) + '</li>'; }).join('') + '</ul>' : '') +
+    (l.obj.length ? '<h3>เรียนจบแล้วนักเรียนจะ</h3><ul class="pts">' + l.obj.map(function(p){ return '<li>' + esc(p) + '</li>'; }).join('') + '</ul>' : '') +
+    (l.work ? '<div class="alert warn small" style="margin-top:12px"><b>ใบงาน/ชิ้นงาน:</b> ' + esc(l.work) + '</div>' : '') +
+    (l.link ? '<p><a href="' + esc(l.link) + '" target="_blank">เอกสารเพิ่มเติม ›</a></p>' : '') +
+    (function(){ var rel = (S.home && S.home.tasks || []).filter(function(t){ return (t.lessons || []).indexOf(l.code) >= 0 && t.col; });
+      return rel.length ? '<h3 style="margin-top:16px">งานที่เกี่ยวข้อง</h3><div class="list">' + rel.map(taskRow).join('') + '</div>' : ''; })() + '</div>';
+}
+
+/* rubric parsing: "ชื่อ (4 คะแนน): คำอธิบาย [ดี 4 / พอใช้ 3 / ปรับปรุง 1]" */
+function parseRubric(line){
+  var m = String(line).match(/^(.*?)\s*\((\d+(?:\.\d+)?)\s*คะแนน\)\s*:?\s*(.*?)\s*(?:\[(.+)\])?\s*$/);
+  if (!m || /^รวม/.test(m[1])) return null;
+  var levels = (m[4] || '').split('/').map(function(x){ var k = x.trim().match(/^(.*?)\s+(\d+(?:\.\d+)?)$/); return k ? { label: k[1], pts: Number(k[2]) } : null; }).filter(Boolean);
+  return { name: m[1], max: Number(m[2]), desc: m[3], levels: levels };
+}
+function rubricLineHtml(x){
+  var r = parseRubric(x);
+  if (!r) return '<div class="' + (/^(รวม|\d+ ข้อ|ไม่เก็บ)/.test(x) ? 'tot' : '') + '">' + esc(x) + '</div>';
+  return '<div><b>' + esc(r.name) + '</b> <span class="muted small">(' + fmtNum(r.max) + ' คะแนน)</span>' + (r.desc ? '<br><span class="small">' + esc(r.desc) + '</span>' : '') +
+    (r.levels.length ? '<br>' + r.levels.map(function(l){ return '<span class="lv">' + esc(l.label) + ' ' + fmtNum(l.pts) + '</span>'; }).join('') : '') + '</div>';
+}
+function rubricPicker(rubric, i){
+  var rows = (rubric || []).map(parseRubric).filter(function(r){ return r && r.levels.length; });
+  if (!rows.length) return '';
+  return '<div class="rpick" id="rp' + i + '"><div class="small muted" style="margin-bottom:4px">ให้คะแนนตามเกณฑ์ (กดระดับ ระบบรวมคะแนนให้)</div>' + rows.map(function(r, k){
+    return '<div class="rrow"><span class="rname">' + esc(r.name) + ' <span class="muted">/' + fmtNum(r.max) + '</span></span>' + r.levels.map(function(l){
+      return '<button type="button" data-k="' + k + '" data-p="' + l.pts + '" onclick="pickLevel(this,' + i + ')">' + esc(l.label) + ' ' + fmtNum(l.pts) + '</button>'; }).join('') + '</div>';
+  }).join('') + '</div>';
+}
+function pickLevel(btn, i){
+  Array.prototype.forEach.call(document.querySelectorAll('#rp' + i + ' button[data-k="' + btn.dataset.k + '"]'), function(b){ b.classList.remove('on'); });
+  btn.classList.add('on');
+  var sum = 0; Array.prototype.forEach.call(document.querySelectorAll('#rp' + i + ' button.on'), function(b){ sum += Number(b.dataset.p); });
+  document.getElementById('sc' + i).value = Math.round(sum * 100) / 100;
+}
+
+/* task detail */
+function taskDetailHtml(t, forTeacher){
+  var lessons = (t.lessons || []).map(function(c){ var l = (S.boot.lessons || []).filter(function(x){ return x.code === c; })[0]; return l ? { code: c, title: l.title } : null; }).filter(Boolean);
+  var meta = [];
+  meta.push(['ช่องคะแนน', t.col ? esc(t.col) + (t.max ? ' (' + fmtNum(t.max) + ' คะแนน)' : '') : 'ไม่เก็บคะแนน']);
+  if (t.format) meta.push(['รูปแบบ', esc(t.format)]);
+  if (t.due) meta.push(['กำหนดส่ง', fmtDate(t.due)]);
+  if (t.quiz) meta.push(['ข้อสอบ', (t.count || '') + ' ข้อ' + (t.minutes ? ' · ' + t.minutes + ' นาที' : ' · ไม่จับเวลา')]);
+  if (t.quiz) meta.push(['ทำได้', t.attempts ? t.attempts + ' ครั้ง' + (forTeacher ? '' : ' (ใช้ไป ' + (t.attemptsUsed || 0) + ')') : 'ไม่จำกัด']);
+  var n = 0, sec = function(title, body){ n++; return '<div class="sec"><h3><span class="n">' + n + '</span>' + title + '</h3>' + body + '</div>'; };
+  var h = '<div class="meta">' + meta.map(function(m){ return '<div><span>' + m[0] + '</span>' + m[1] + '</div>'; }).join('') + '</div>';
+  if (t.detail) h += '<p class="muted" style="margin:4px 0 0">' + esc(t.detail) + '</p>';
+  if (t.obj && t.obj.length) h += sec('จุดประสงค์', '<ul class="pts">' + t.obj.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>');
+  if (t.steps && t.steps.length) h += sec(t.quiz ? 'วิธีทำ / กติกา' : 'สิ่งที่ต้องทำ', '<ol class="steps">' + t.steps.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('') + '</ol>');
+  if (t.deliver) h += sec('สิ่งที่ต้องส่ง', '<p style="margin:4px 0">' + esc(t.deliver) + '</p>');
+  if (t.rubric && t.rubric.length) h += sec('เกณฑ์การให้คะแนน', '<div class="rub">' + t.rubric.map(rubricLineHtml).join('') + '</div>');
+  if (lessons.length) h += sec('บทเรียนที่ต้องอ่านก่อน', lessons.map(function(l){ return forTeacher ? '<span class="badge" style="margin:0 6px 6px 0;display:inline-block">' + esc(l.code) + ' ' + esc(l.title) + '</span>' : '<button class="lesson" onclick="openLesson(\'' + esc(l.code) + '\')"><span class="code">' + esc(l.code) + '</span><span class="grow">' + esc(l.title) + '</span><span class="muted">›</span></button>'; }).join(''));
+  return h;
+}
+function openTask(id){ S.view = 'task'; S.taskId = id; studentShell(); }
+function taskView(){
+  var t = S.home.tasks.filter(function(x){ return x.id === S.taskId; })[0];
+  if (!t) { S.view = 'tasks'; return tasksView(); }
+  var act = taskAction(t);
+  return '<button class="btn ghost sm" onclick="go(\'tasks\')">‹ งานทั้งหมด</button>' +
+    '<div class="card" style="margin-top:12px"><div class="row"><div class="grow"><h2 style="font-size:19px;margin:0">' + esc(t.title) + '</h2></div>' + chip(t.status) + '</div>' +
+    (t.score !== null && t.score !== undefined ? '<div class="alert info small" style="margin:10px 0 0">ได้ ' + fmtNum(t.score) + ' / ' + fmtNum(t.max) + ' คะแนน</div>' : '') +
+    (t.submission && t.submission.comment ? '<div class="alert warn small" style="margin:10px 0 0">ครู: ' + esc(t.submission.comment) + '</div>' : '') +
+    (t.submission ? '<p class="small muted">ส่งล่าสุด ' + fmtTime(t.submission.time) + '</p>' : '') +
+    taskDetailHtml(t, false) + (act ? '<div style="margin-top:18px">' + act.replace('btn sm', 'btn block') + '</div>' : '') + '</div>';
+}
+function taskAction(t){
+  if (t.quiz && t.open) {
+    var left = t.attempts ? (t.attempts - t.attemptsUsed) : null;
+    if (left === null || left > 0) return '<button class="btn sm" onclick="beginQuiz(\'' + esc(t.id) + '\')">' + (t.attemptsUsed ? 'ทำอีกครั้ง' : 'เริ่มทำ') + '</button>';
+  } else if (!t.quiz && t.open && t.status !== 'graded') {
+    return '<button class="btn sm" onclick="workModal(\'' + esc(t.id) + '\')">' + (t.submission ? 'ส่งใหม่' : 'ส่งงาน') + '</button>';
+  }
+  return '';
+}
+
+/* work submission */
+function workModal(id){
+  var t = S.home.tasks.filter(function(x){ return x.id === id; })[0];
+  var m = document.createElement('div'); m.className = 'modal';
+  m.innerHTML = '<div class="box"><h2 style="margin-top:0">' + esc(t.title) + '</h2>' + (t.detail ? '<p class="muted small">' + esc(t.detail) + '</p>' : '') +
+    (t.submission ? '<div class="alert info small">ส่งล่าสุด ' + fmtTime(t.submission.time) + ' — การส่งใหม่จะแทนที่ของเดิม</div>' : '') +
+    '<label>ลิงก์ผลงาน (Google Drive, Canva, Colab ฯลฯ)</label><input type="url" id="wl" placeholder="https://..." value="">' +
+    '<label>หรือแนบไฟล์ (รูปภาพ / PDF ไม่เกิน 10 MB)</label><input type="file" id="wf" accept="image/*,application/pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.py">' +
+    '<label>ข้อความถึงครู (ถ้ามี)</label><textarea id="wn" rows="2"></textarea>' +
+    '<div class="row" style="margin-top:16px"><button class="btn ghost grow" id="wc">ยกเลิก</button><button class="btn grow" id="ws">ส่งงาน</button></div></div>';
+  document.body.appendChild(m);
+  m.querySelector('#wc').onclick = function(){ m.remove(); };
+  m.querySelector('#ws').onclick = function(){
+    var btn = this; btn.disabled = true; btn.textContent = 'กำลังส่ง...';
+    var f = m.querySelector('#wf').files[0];
+    var send = function(file){
+      call('submitWork', { token: S.token, taskId: id, link: m.querySelector('#wl').value, note: m.querySelector('#wn').value, file: file })
+        .then(function(){ m.remove(); toast('ส่งงานเรียบร้อย'); loadHome().then(function(){ go('tasks'); }); })
+        .catch(function(e){ fail(e); btn.disabled = false; btn.textContent = 'ส่งงาน'; });
+    };
+    if (!f) return send(null);
+    if (f.size > 10 * 1024 * 1024) { toast('ไฟล์ใหญ่เกิน 10 MB'); btn.disabled = false; btn.textContent = 'ส่งงาน'; return; }
+    var rd = new FileReader();
+    rd.onload = function(){ send({ name: f.name, mime: f.type, data: String(rd.result).split(',')[1] }); };
+    rd.readAsDataURL(f);
+  };
+}
+
+/* quiz */
+function beginQuiz(id){
+  var t = S.home.tasks.filter(function(x){ return x.id === id; })[0];
+  var msg = t.title + '\n' + (t.count ? t.count + ' ข้อ' : '') + (t.minutes ? ' · เวลา ' + t.minutes + ' นาที (เริ่มนับทันที)' : '') + (t.attempts ? '\nทำได้ ' + t.attempts + ' ครั้ง (เหลือ ' + (t.attempts - t.attemptsUsed) + ')' : '');
+  confirmBox(msg, 'เริ่มทำ', function(){
+    if (S.starting) return; S.starting = true;
+    loading();
+    call('startQuiz', { token: S.token, taskId: id }).then(function(q){
+      var saved = {}; try { saved = JSON.parse(store('cc_q_' + q.sid) || '{}'); } catch(e){}
+      S.quiz = { data: q, answers: saved, idx: 0, offset: q.serverNow - Date.now(), result: null };
+      S.starting = false;
+      if (q.resumed) toast('กลับมาทำชุดเดิมต่อ');
+      quizView();
+    }).catch(function(e){ S.starting = false; fail(e); studentShell(); });
+  });
+}
+function confirmBox(text, okLabel, onOk){
+  var m = document.createElement('div'); m.className = 'modal';
+  m.innerHTML = '<div class="box"><p style="white-space:pre-line;margin-top:0">' + esc(text) + '</p><div class="row"><button class="btn ghost grow" id="cn">ยกเลิก</button><button class="btn grow" id="ck">' + esc(okLabel) + '</button></div></div>';
+  document.body.appendChild(m);
+  m.querySelector('#cn').onclick = function(){ m.remove(); };
+  m.querySelector('#ck').onclick = function(){ m.remove(); onOk(); };
+}
+var TIMER = null;
+var LAST_RENDER = 0;
+function quizView(){
+  var Q = S.quiz, d = Q.data;
+  if (Q.result) return quizResult();
+  if (Q.reviewing) return quizReview();
+  var q = d.questions[Q.idx];
+  var answered = Object.keys(Q.answers).length;
+  var p = S.home && S.home.profile;
+  var opts = q.ch.map(function(c, i){
+    return '<button type="button" class="opt ' + (Q.answers[q.qid] === i ? 'on' : '') + '" data-i="' + i + '" onclick="pick(' + i + ')"><span class="k">' + ['ก','ข','ค','ง'][i] + '</span><span>' + esc(c) + '</span></button>';
+  }).join('');
+  var dots = d.questions.map(function(x, i){ return '<button type="button" class="' + (Q.answers[x.qid] !== undefined ? 'ans ' : '') + (i === Q.idx ? 'cur' : '') + '" onclick="jump(' + i + ')">' + (i + 1) + '</button>'; }).join('');
+  var last = Q.idx === d.questions.length - 1;
+  $('#app').innerHTML = '<div class="top"><div class="in"><div class="grow"><h1>' + esc(d.task.title) + '</h1><small>' + (p ? esc(p.name) + ' · ' + esc(p.cls) + ' เลขที่ ' + esc(p.no) + ' · ' : '') + '<span id="ansc">ตอบแล้ว ' + answered + '/' + d.questions.length + ' ข้อ</span></small></div>' + (d.deadline ? '<span class="timer" id="tm">--:--</span>' : '') + '</div></div>' +
+    '<div class="wrap" style="max-width:720px"><div class="card"><div class="muted small">ข้อ ' + q.n + ' / ' + d.questions.length + '</div><div class="q">' + esc(q.q) + '</div>' + opts +
+    '<div class="small" id="picked" style="min-height:20px;color:var(--pri)">' + (Q.answers[q.qid] !== undefined ? 'คำตอบที่เลือก: ' + ['ก','ข','ค','ง'][Q.answers[q.qid]] : 'แตะตัวเลือกเพื่อตอบ แล้วกด ถัดไป') + '</div>' +
+    '<div class="row" style="margin-top:8px"><button type="button" class="btn ghost" ' + (Q.idx === 0 ? 'disabled' : '') + ' onclick="jump(' + (Q.idx - 1) + ')">‹ ก่อนหน้า</button><span class="grow"></span>' +
+    (last ? '<button type="button" class="btn warn" onclick="openReview()">ตรวจทานก่อนส่ง</button>' : '<button type="button" class="btn" onclick="jump(' + (Q.idx + 1) + ')">ถัดไป ›</button>') + '</div></div>' +
+    '<div class="card"><div class="row"><b class="grow">ข้อสอบทั้งหมด</b><button type="button" class="btn warn sm" onclick="openReview()">ตรวจทานก่อนส่ง</button></div><div class="dots" id="dots">' + dots + '</div></div></div>';
+  LAST_RENDER = Date.now();
+  startTimer();
+}
+/* แตะตัวเลือก: บันทึกและไฮไลต์ทันที ไม่เลื่อนข้ออัตโนมัติ (กันกดซ้ำ/ดับเบิลคลิกไปตอบข้อถัดไป) */
+function pick(i){
+  var Q = S.quiz; if (!Q || Q.sending) return;
+  var q = Q.data.questions[Q.idx];
+  Q.answers[q.qid] = i;
+  store('cc_q_' + Q.data.sid, JSON.stringify(Q.answers));
+  Array.prototype.forEach.call(document.querySelectorAll('.opt'), function(b){ b.classList.toggle('on', Number(b.dataset.i) === i); });
+  var pe = $('#picked'); if (pe) pe.textContent = 'คำตอบที่เลือก: ' + ['ก','ข','ค','ง'][i];
+  var dot = document.querySelectorAll('#dots button')[Q.idx]; if (dot) dot.classList.add('ans');
+  var ac = $('#ansc'); if (ac) ac.textContent = 'ตอบแล้ว ' + Object.keys(Q.answers).length + '/' + Q.data.questions.length + ' ข้อ';
+}
+function jump(i){
+  var Q = S.quiz; if (!Q) return;
+  if (Date.now() - LAST_RENDER < 350) return; // กันกดปุ่มซ้ำเร็ว ๆ จนข้ามข้อ
+  if (i < 0 || i >= Q.data.questions.length) return;
+  Q.idx = i; Q.reviewing = false; quizView(); window.scrollTo(0, 0);
+}
+function openReview(){ var Q = S.quiz; if (Date.now() - LAST_RENDER < 350) return; Q.reviewing = true; quizView(); window.scrollTo(0, 0); }
+function quizReview(){
+  var Q = S.quiz, d = Q.data, n = d.questions.length, a = Object.keys(Q.answers).length;
+  var rows = d.questions.map(function(q, i){
+    var k = Q.answers[q.qid];
+    return '<div class="item"><div class="grow"><div class="small muted">ข้อ ' + q.n + '</div><div>' + esc(q.q) + '</div>' +
+      (k === undefined ? '<div class="small" style="color:var(--bad)">ยังไม่ได้ตอบ</div>' : '<div class="small" style="color:var(--pri)">ตอบ ' + ['ก','ข','ค','ง'][k] + '. ' + esc(q.ch[k]) + '</div>') +
+      '</div><button type="button" class="btn ghost sm" onclick="Q_edit(' + i + ')">แก้</button></div>';
+  }).join('');
+  $('#app').innerHTML = '<div class="top"><div class="in"><div class="grow"><h1>ตรวจทานคำตอบ</h1><small>' + esc(d.task.title) + ' · ตอบแล้ว ' + a + '/' + n + ' ข้อ</small></div>' + (d.deadline ? '<span class="timer" id="tm">--:--</span>' : '') + '</div></div>' +
+    '<div class="wrap" style="max-width:720px">' + (a < n ? '<div class="alert bad">ยังไม่ได้ตอบ ' + (n - a) + ' ข้อ</div>' : '') +
+    '<div class="card"><p class="small muted" style="margin-top:0">ตรวจว่าคำตอบแต่ละข้อตรงกับที่ตั้งใจ ถ้าไม่ตรงกด "แก้"</p><div class="list">' + rows + '</div></div>' +
+    '<div class="row"><button type="button" class="btn ghost grow" onclick="Q_edit(S.quiz.idx)">‹ กลับไปทำต่อ</button><button type="button" class="btn warn grow" onclick="askSubmit()">ส่งคำตอบ</button></div></div>';
+  LAST_RENDER = Date.now();
+  startTimer();
+}
+function Q_edit(i){ var Q = S.quiz; Q.reviewing = false; Q.idx = i; LAST_RENDER = 0; quizView(); window.scrollTo(0, 0); }
+function startTimer(){
+  clearInterval(TIMER);
+  var d = S.quiz.data; if (!d.deadline) return;
+  var tick = function(){
+    var left = d.deadline - (Date.now() + S.quiz.offset);
+    var el = $('#tm'); if (!el) return clearInterval(TIMER);
+    if (left <= 0) { clearInterval(TIMER); el.textContent = '00:00'; toast('หมดเวลา ระบบส่งคำตอบให้อัตโนมัติ'); doSubmit(); return; }
+    var m = Math.floor(left / 60000), s = Math.floor(left % 60000 / 1000);
+    el.textContent = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+    el.className = 'timer' + (left < 60000 ? ' low' : '');
+  };
+  tick(); TIMER = setInterval(tick, 1000);
+}
+function askSubmit(){
+  var Q = S.quiz, n = Q.data.questions.length, a = Object.keys(Q.answers).length;
+  confirmBox(a < n ? 'ยังไม่ได้ตอบ ' + (n - a) + ' ข้อ\nต้องการส่งคำตอบเลยหรือไม่?' : 'ตอบครบ ' + n + ' ข้อแล้ว ยืนยันส่งคำตอบ?\n(ส่งแล้วแก้ไม่ได้)', 'ส่งคำตอบ', doSubmit);
+}
+function doSubmit(){
+  var Q = S.quiz; if (Q.sending) return; Q.sending = true; clearInterval(TIMER);
+  loading();
+  call('submitQuiz', { token: S.token, sid: Q.data.sid, answers: Q.answers }).then(function(r){
+    store('cc_q_' + Q.data.sid, null); Q.result = r; quizResult();
+  }).catch(function(e){ Q.sending = false; fail(e); quizView(); });
+}
+function quizResult(){
+  var Q = S.quiz, r = Q.result;
+  var rv = '';
+  if (r.review) rv = '<div class="card"><h2>เฉลย</h2>' + r.review.map(function(x){
+    return '<div style="padding:10px 0;border-top:1px solid var(--line)"><div class="small muted">ข้อ ' + x.n + (x.picked === x.correct ? ' ✓ ถูก' : ' ✗') + '</div><div style="margin:4px 0 8px">' + esc(x.q) + '</div>' +
+      x.ch.map(function(c, i){ var cls = i === x.correct ? 'right' : (i === x.picked ? 'wrong' : ''); var tag = (i === x.picked ? ' <b class="small">← คำตอบของคุณ</b>' : '') + (i === x.correct ? ' <b class="small" style="color:var(--ok)">✓ เฉลย</b>' : ''); return '<div class="opt ' + cls + '" style="cursor:default"><span class="k">' + ['ก','ข','ค','ง'][i] + '</span><span>' + esc(c) + tag + '</span></div>'; }).join('') + (x.picked < 0 ? '<div class="small" style="color:var(--bad)">ไม่ได้ตอบข้อนี้</div>' : '') +
+      (x.exp ? '<div class="small muted">' + esc(x.exp) + '</div>' : '') + '</div>';
+  }).join('') + '</div>';
+  $('#app').innerHTML = header(Q.data.task.title) + '<div class="wrap" style="max-width:720px"><div class="card" style="text-align:center"><div class="muted">ตอบถูก ' + r.correct + ' จาก ' + r.total + ' ข้อ</div>' +
+    (r.colName ? '<div class="big" style="margin:10px 0">' + fmtNum(r.score) + '<span style="font-size:20px;color:var(--ink2)"> / ' + fmtNum(r.max) + '</span></div><div class="small muted">' + (r.written ? 'บันทึกลงช่อง "' + esc(r.colName) + '" แล้ว' : 'คะแนนครั้งก่อนสูงกว่า ระบบเก็บคะแนนเดิมไว้') + '</div>' : '<div class="big" style="margin:10px 0">' + Math.round(r.correct / r.total * 100) + '%</div><div class="small muted">แบบฝึก ไม่เก็บคะแนน</div>') +
+    (r.attemptsLeft !== null ? '<div class="small muted">เหลือสิทธิ์ทำอีก ' + r.attemptsLeft + ' ครั้ง</div>' : '') + (r.late ? '<div class="small" style="color:var(--bad)">ส่งหลังหมดเวลา</div>' : '') +
+    '<button class="btn" style="margin-top:14px" onclick="S.quiz=null;loadHome().then(function(){go(\'tasks\')})">กลับหน้างาน</button></div>' + rv + '</div>';
+  window.scrollTo(0, 0);
+}
+
+/* ================= TEACHER ================= */
+function teacherLogin(){
+  $('#app').innerHTML = header('สำหรับครู') + '<div class="wrap" style="max-width:420px"><div class="card" style="margin-top:20px"><h2>เข้าสู่หน้าครู</h2>' +
+    '<form id="tf"><label>รหัสครู (PIN จากแท็บ "ตั้งค่า")</label><input type="password" id="pin" inputmode="numeric" required><button class="btn block" style="margin-top:16px">เข้าสู่ระบบ</button></form></div>' +
+    (MODE === 'teacher' ? '' : '<p style="text-align:center"><button class="btn ghost sm" onclick="S.view=\'home\';route()">‹ กลับหน้านักเรียน</button></p>') + '</div>';
+  $('#tf').onsubmit = function(ev){
+    ev.preventDefault();
+    call('tLogin', { pin: $('#pin').value }).then(function(r){ S.tToken = r.token; store('cc_t', r.token); S.t.classes = r.classes; S.view = 'teacher'; teacherShell(); }).catch(fail);
+  };
+}
+function tLogout(){ S.tToken = null; store('cc_t', null); S.view = 'home'; route(); }
+function teacherShell(){
+  if (!S.t.classes) {
+    // ดึงรายชื่อห้องจาก overview
+    loading();
+    return call('tOverview', { token: S.tToken }).then(function(o){ S.t.overview = o; S.t.classes = o.classes.map(function(c){ return { tab: c.tab, label: c.label }; }); teacherShell(); }).catch(fail);
+  }
+  var tabs = [['overview','ภาพรวม'],['grid','ตารางคะแนน'],['follow','ตามงาน'],['inbox','ตรวจงาน'],['quiz','แบบทดสอบ'],['practice','ชุดฝึก']];
+  $('#app').innerHTML = header('หน้าครู · ' + (S.boot.course || ''), '<button onclick="tLogout()">ออก</button>') +
+    '<div class="wrap" style="max-width:1200px"><div class="tabs">' + tabs.map(function(t){ return '<button class="' + (S.t.tab === t[0] ? 'on' : '') + '" onclick="tGo(\'' + t[0] + '\')">' + t[1] + '</button>'; }).join('') + '</div><div id="tv"><div class="spin"></div></div></div>';
+  ({ overview: tOverview, grid: tGrid, follow: tFollow, inbox: tInbox, quiz: tQuiz, practice: tPractice })[S.t.tab]();
+}
+function tGo(t){ S.t.tab = t; teacherShell(); }
+function classSelect(id, val, allLabel){
+  return '<select id="' + id + '">' + (allLabel ? '<option value="">' + allLabel + '</option>' : '') + S.t.classes.map(function(c){ return '<option value="' + esc(c.tab) + '"' + (c.tab === val ? ' selected' : '') + '>' + esc(c.label) + '</option>'; }).join('') + '</select>';
+}
+function heat(pct){
+  if (pct === null) return '<span class="muted">–</span>';
+  var bg = pct >= 90 ? 'var(--ok2)' : pct >= 60 ? 'var(--acc2)' : 'var(--bad2)';
+  var fg = pct >= 90 ? 'var(--ok)' : pct >= 60 ? 'var(--warn)' : 'var(--bad)';
+  return '<span class="heat" style="background:' + bg + ';color:' + fg + '">' + pct + '%</span>';
+}
+
+function tOverview(){
+  var load = S.t.overview ? Promise.resolve(S.t.overview) : call('tOverview', { token: S.tToken });
+  S.t.overview = null;
+  load.then(function(o){
+    var gradedTasks = o.tasks.filter(function(t){ return t.col; });
+    var totalStu = o.classes.reduce(function(a, c){ return a + c.n; }, 0);
+    var totalRisk = o.classes.reduce(function(a, c){ return a + c.risk.length; }, 0);
+    var totalLate = o.classes.reduce(function(a, c){ return a + Object.keys(c.perTask).reduce(function(x, k){ return x + c.perTask[k].late; }, 0); }, 0);
+    var totalWait = o.classes.reduce(function(a, c){ return a + Object.keys(c.perTask).reduce(function(x, k){ return x + c.perTask[k].submitted; }, 0); }, 0);
+    var h = '<div class="grid g3" style="margin-bottom:14px">' +
+      '<div class="stat"><span>นักเรียนทั้งหมด</span><b>' + totalStu + '</b><span>' + o.classes.length + ' ห้อง</span></div>' +
+      '<div class="stat"><span>งานรอตรวจ</span><b style="color:var(--info)">' + totalWait + '</b><span><a href="#" onclick="tGo(\'inbox\');return false">ไปตรวจงาน ›</a></span></div>' +
+      '<div class="stat"><span>รายการค้างส่ง (เลยกำหนด)</span><b style="color:var(--bad)">' + totalLate + '</b><span>กลุ่มเสี่ยง ' + totalRisk + ' คน</span></div></div>';
+    h += '<div class="card"><h2>อัตราการส่งงาน (ได้คะแนน + ส่งแล้ว) แยกห้อง</h2><div class="tbl"><table><thead><tr><th class="l sticky">ห้อง</th><th>คน</th><th>เฉลี่ย%</th>' +
+      gradedTasks.map(function(t){ return '<th title="' + esc(t.title) + '">' + esc(t.col) + (t.open ? '' : '<br><span class="muted small">ปิด</span>') + '</th>'; }).join('') + '</tr></thead><tbody>' +
+      o.classes.map(function(c){
+        return '<tr><td class="l sticky"><a href="#" onclick="S.t.gridTab=\'' + esc(c.tab) + '\';tGo(\'grid\');return false">' + esc(c.label) + '</a></td><td>' + c.n + '</td><td>' + (c.avgPct === null ? '–' : c.avgPct + '%') + '</td>' +
+          gradedTasks.map(function(t){
+            var p = c.perTask[t.id]; if (!p) return '<td class="muted">–</td>';
+            var active = c.n - p.upcoming;
+            if (!active && !p.graded) return '<td class="muted small">ยังไม่เปิด</td>';
+            var pct = Math.round((p.graded + p.submitted) / c.n * 100);
+            return '<td>' + heat(pct) + (p.late ? '<div class="small" style="color:var(--bad)">ค้าง ' + p.late + '</div>' : '') + '</td>';
+          }).join('') + '</tr>';
+      }).join('') + '</tbody></table></div></div>';
+    var risk = [];
+    o.classes.forEach(function(c){ c.risk.forEach(function(r){ risk.push([c.label, r]); }); });
+    h += '<div class="card"><h2>นักเรียนกลุ่มเสี่ยง <span class="muted small">(ค้างงานตั้งแต่ 2 งาน หรือคะแนนต่ำกว่า 50% ของงานที่ตรวจแล้ว)</span></h2>' +
+      (risk.length ? '<div class="tbl"><table><thead><tr><th class="l">ห้อง</th><th>เลขที่</th><th class="l">ชื่อ</th><th>ค้าง</th><th>คะแนน%</th></tr></thead><tbody>' + risk.map(function(x){ return '<tr><td class="l">' + esc(x[0]) + '</td><td>' + esc(x[1].no) + '</td><td class="l">' + esc(x[1].name) + '</td><td>' + x[1].missing + '</td><td>' + (x[1].pct === null ? '–' : x[1].pct + '%') + '</td></tr>'; }).join('') + '</tbody></table></div>' : '<p class="muted">ยังไม่มี</p>') + '</div>';
+    $('#tv').innerHTML = h;
+  }).catch(fail);
+}
+
+function tGrid(){
+  var tab = S.t.gridTab || S.t.classes[0].tab;
+  $('#tv').innerHTML = '<div class="row" style="margin-bottom:12px"><div style="min-width:160px">' + classSelect('gc', tab) + '</div><span class="muted small grow">แก้คะแนนในช่องได้ทันที ระบบบันทึกลง Google Sheet เมื่อออกจากช่อง · สีแดง = ค้างส่ง · สีฟ้า = ส่งแล้วรอตรวจ</span></div><div id="gv"><div class="spin"></div></div>';
+  $('#gc').onchange = function(){ S.t.gridTab = this.value; tGrid(); };
+  call('tClass', { token: S.tToken, tab: tab }).then(function(d){
+    S.t.grid = d;
+    var maxTotal = d.cols.reduce(function(a, c){ return a + c.max; }, 0);
+    var h = '<div class="tbl"><table><thead><tr><th>ที่</th><th class="l sticky">ชื่อ - นามสกุล</th>' + d.cols.map(function(c){ return '<th title="' + esc(c.task ? c.task.title : '') + '">' + esc(c.name) + '<br><span class="muted small">' + fmtNum(c.max) + '</span></th>'; }).join('') + '<th>รวม<br><span class="muted small">' + maxTotal + '</span></th><th>เกรด</th></tr></thead><tbody>' +
+      d.students.map(function(s, si){
+        return '<tr><td>' + esc(s.no) + '</td><td class="l sticky">' + esc(s.name) + '</td>' + d.cols.map(function(c, ci){
+          var v = s.scores[c.name]; var st = s.status[c.name];
+          return '<td><input class="cell ' + (st === 'late' ? 'late' : st === 'submitted' ? 'submitted' : '') + '" data-s="' + si + '" data-c="' + ci + '" value="' + (v === null ? '' : v) + '" inputmode="decimal"></td>';
+        }).join('') + '<td id="tot' + si + '"></td><td id="grd' + si + '"></td></tr>';
+      }).join('') + '</tbody></table></div>';
+    $('#gv').innerHTML = h;
+    d.students.forEach(function(_, si){ updTotal(si); });
+    Array.prototype.forEach.call(document.querySelectorAll('.cell'), function(inp){
+      inp.onfocus = function(){ this.dataset.old = this.value; };
+      inp.onkeydown = function(e){ if (e.key === 'Enter') { e.preventDefault(); var nx = document.querySelector('.cell[data-s="' + (Number(this.dataset.s) + 1) + '"][data-c="' + this.dataset.c + '"]'); if (nx) nx.focus(); else this.blur(); } };
+      inp.onchange = function(){ saveCell(this); };
+    });
+  }).catch(fail);
+}
+function updTotal(si){
+  var d = S.t.grid, s = d.students[si], t = 0, any = false;
+  d.cols.forEach(function(c){ var v = s.scores[c.name]; if (v !== null && v !== '') { t += Number(v); any = true; } });
+  $('#tot' + si).innerHTML = any ? '<b>' + fmtNum(t) + '</b>' : '';
+  var fin = s.scores['ปลายภาค'];
+  var g = (!any || fin === null || fin === undefined || fin === '') ? '' : t >= 80 ? 4 : t >= 75 ? 3.5 : t >= 70 ? 3 : t >= 65 ? 2.5 : t >= 60 ? 2 : t >= 55 ? 1.5 : t >= 50 ? 1 : 0;
+  $('#grd' + si).innerHTML = g === '' ? '<span class="muted small">รอปลายภาค</span>' : g;
+}
+function saveCell(inp){
+  var d = S.t.grid, s = d.students[inp.dataset.s], c = d.cols[inp.dataset.c];
+  var val = inp.value.trim();
+  if (val !== '' && (isNaN(Number(val)) || Number(val) < 0 || Number(val) > c.max)) { inp.classList.add('err'); toast('คะแนนต้องอยู่ระหว่าง 0–' + c.max); return; }
+  inp.classList.remove('err'); inp.classList.add('saving');
+  call('tSetScore', { token: S.tToken, tab: d.tab, id: s.id, col: c.name, value: val }).then(function(r){
+    inp.classList.remove('saving', 'late', 'submitted');
+    s.scores[c.name] = r.value === '' ? null : r.value; updTotal(Number(inp.dataset.s));
+  }).catch(function(e){ inp.classList.remove('saving'); inp.classList.add('err'); inp.value = inp.dataset.old || ''; fail(e); });
+}
+
+function tasksCache(){ return S.t.tasks ? Promise.resolve(S.t.tasks) : call('tTasks', { token: S.tToken }).then(function(t){ S.t.tasks = t; return t; }); }
+function tFollow(){
+  tasksCache().then(function(tasks){
+    var graded = tasks.filter(function(t){ return t.col; });
+    var tid = S.t.followTask || graded[0].id, tab = S.t.followTab === undefined ? S.t.classes[0].tab : S.t.followTab;
+    $('#tv').innerHTML = '<div class="row" style="margin-bottom:12px"><div class="grow" style="min-width:220px"><select id="ft">' + graded.map(function(t){ return '<option value="' + esc(t.id) + '"' + (t.id === tid ? ' selected' : '') + '>' + esc(t.col + ' · ' + t.title) + '</option>'; }).join('') + '</select></div><div style="min-width:150px">' + classSelect('fc', tab, 'ทุกห้อง') + '</div></div><div id="fv"><div class="spin"></div></div>';
+    $('#ft').onchange = function(){ S.t.followTask = this.value; tFollow(); };
+    $('#fc').onchange = function(){ S.t.followTab = this.value; tFollow(); };
+    call('tFollow', { token: S.tToken, taskId: tid, tab: tab }).then(function(d){
+      var lines = [];
+      var h = d.classes.map(function(c){
+        var miss = c.students.filter(function(s){ return ['late','pending','revise'].indexOf(s.status) >= 0; });
+        var wait = c.students.filter(function(s){ return s.status === 'submitted'; });
+        var done = c.students.filter(function(s){ return s.status === 'graded'; });
+        if (miss.length) lines.push(c.label + ' (' + miss.length + ' คน): ' + miss.map(function(s){ return 'เลขที่ ' + s.no + ' ' + s.name.replace(/^(เด็กชาย|เด็กหญิง|นาย|นางสาว)/, ''); }).join(', '));
+        return '<div class="card"><div class="row"><h2 class="grow" style="margin:0">' + esc(c.label) + '</h2><span class="chip s-graded">ได้คะแนน ' + done.length + '</span><span class="chip s-submitted">รอตรวจ ' + wait.length + '</span><span class="chip s-late">ยังไม่ส่ง ' + miss.length + '</span></div>' +
+          (miss.length ? '<div class="list" style="margin-top:8px">' + miss.map(function(s){
+            return '<div class="item"><span style="width:28px" class="muted">' + esc(s.no) + '</span><span class="grow">' + esc(s.name) + '<br>' + chip(s.status) + (s.attempts ? ' <span class="small muted">ทำแล้ว ' + s.attempts + ' ครั้ง</span>' : '') + '</span>' +
+              (d.task.col ? '<input class="cell" style="width:70px;border-color:var(--line)" placeholder="คะแนน" data-tab="' + esc(c.tab) + '" data-id="' + esc(s.id) + '" data-max="' + c.max + '">' : '') + '</div>';
+          }).join('') + '</div>' : '<p class="muted small">ส่งครบทุกคนแล้ว</p>') + '</div>';
+      }).join('');
+      var msg = '📢 ติดตามงาน "' + d.task.title + '"' + (d.task.due ? ' (กำหนดส่ง ' + fmtDate(d.task.due) + ')' : '') + '\nรายชื่อที่ยังไม่ส่ง\n' + (lines.length ? lines.join('\n') : 'ส่งครบแล้ว 🎉') + '\nส่งงานได้ที่เว็บห้องเรียนวิทยาการคำนวณ';
+      $('#fv').innerHTML = '<div class="card"><div class="row"><h2 class="grow" style="margin:0">ข้อความประกาศตามงาน</h2><button class="btn sm" id="cp">คัดลอก</button></div><p class="muted small">คัดลอกไปวางในกลุ่ม LINE ของห้องได้เลย</p><textarea class="copy" id="ctext">' + esc(msg) + '</textarea></div>' + h;
+      $('#cp').onclick = function(){ var ta = $('#ctext'); ta.select(); var ok = false; try { ok = document.execCommand('copy'); } catch(e){} if (!ok && navigator.clipboard) navigator.clipboard.writeText(ta.value); toast('คัดลอกแล้ว'); };
+      Array.prototype.forEach.call(document.querySelectorAll('#fv .cell'), function(inp){
+        inp.onchange = function(){
+          var el = this, v = el.value.trim(); if (v === '') return;
+          if (isNaN(Number(v)) || Number(v) < 0 || Number(v) > Number(el.dataset.max)) { toast('คะแนนต้องอยู่ระหว่าง 0–' + el.dataset.max); return; }
+          el.classList.add('saving');
+          call('tSetScore', { token: S.tToken, tab: el.dataset.tab, id: el.dataset.id, col: d.task.col, value: v }).then(function(){ el.classList.remove('saving'); el.style.background = 'var(--ok2)'; toast('บันทึกแล้ว'); }).catch(function(e){ el.classList.remove('saving'); fail(e); });
+        };
+      });
+    }).catch(fail);
+  }).catch(fail);
+}
+
+function tInbox(){
+  var f = S.t.inboxFilter || 'รอตรวจ';
+  $('#tv').innerHTML = '<div class="tabs">' + [['รอตรวจ','รอตรวจ'],['ให้แก้ไข','ให้แก้ไข'],['ตรวจแล้ว','ตรวจแล้ว'],['all','ทั้งหมด']].map(function(x){ return '<button class="' + (f === x[0] ? 'on' : '') + '" onclick="S.t.inboxFilter=\'' + x[0] + '\';tInbox()">' + x[1] + '</button>'; }).join('') + '</div><div id="iv"><div class="spin"></div></div>';
+  call('tSubmissions', { token: S.tToken, filter: f }).then(function(list){
+    if (!list.length) { $('#iv').innerHTML = '<div class="card muted">ไม่มีรายการ</div>'; return; }
+    $('#iv').innerHTML = list.map(function(x, i){
+      var links = String(x.link || '').split(/\s+/).filter(String).map(function(u, k){ return '<a href="' + esc(u) + '" target="_blank" class="btn soft sm">เปิดงาน ' + (k + 1) + '</a>'; }).join(' ');
+      return '<div class="card"><div class="row"><div class="grow"><b>' + esc(x.cls) + ' · ' + esc(x.name) + '</b><div class="muted small">' + esc(x.col) + ' · ' + esc(x.taskTitle) + ' · ส่งเมื่อ ' + fmtTime(x.time) + '</div></div><span class="chip ' + (x.status === 'ตรวจแล้ว' ? 's-graded' : x.status === 'ให้แก้ไข' ? 's-revise' : 's-submitted') + '">' + esc(x.status) + '</span></div>' +
+        (x.note ? '<p class="small" style="margin:8px 0">“' + esc(x.note) + '”</p>' : '') + '<div class="row" style="margin:8px 0">' + links + '</div>' +
+        rubricPicker(x.rubric, i) +
+        '<div class="row"><input type="number" step="0.5" class="grow" style="max-width:120px" id="sc' + i + '" placeholder="คะแนน' + (x.max ? ' /' + x.max : '') + '" value="' + esc(x.score) + '"><input type="text" class="grow" id="cm' + i + '" placeholder="ความเห็นถึงนักเรียน (ถ้ามี)" value="' + esc(x.comment) + '"></div>' +
+        '<div class="row" style="margin-top:8px"><button class="btn sm" onclick="gradeSub(' + x.row + ',' + i + ',\'ตรวจแล้ว\')">บันทึกคะแนน</button><button class="btn ghost sm" onclick="gradeSub(' + x.row + ',' + i + ',\'ให้แก้ไข\')">ส่งกลับให้แก้ไข</button></div></div>';
+    }).join('');
+  }).catch(fail);
+}
+function gradeSub(row, i, status){
+  var sc = $('#sc' + i).value.trim(), cm = $('#cm' + i).value;
+  if (status === 'ตรวจแล้ว' && sc === '') return toast('กรุณาใส่คะแนน');
+  call('tGrade', { token: S.tToken, row: row, score: status === 'ตรวจแล้ว' ? sc : '', status: status, comment: cm }).then(function(){ toast(status === 'ตรวจแล้ว' ? 'บันทึกคะแนนแล้ว' : 'ส่งกลับให้แก้ไขแล้ว'); tInbox(); }).catch(fail);
+}
+
+function tQuiz(){
+  S.t.tasks = null;
+  tasksCache().then(function(tasks){
+    var quizzes = tasks.filter(function(t){ return t.quiz; });
+    $('#tv').innerHTML = '<div class="card"><h2>เปิด/ปิดงานและแบบทดสอบ</h2><p class="muted small" style="margin-top:0">ตั้งค่าละเอียด (จำนวนข้อ เวลา ห้อง กำหนดส่ง) แก้ได้ในแท็บ "งาน" ของ Google Sheet</p><div class="list">' +
+      tasks.map(function(t){
+        return '<div class="item"><div class="grow"><div>' + esc(t.title) + '</div><div class="muted small">' + esc(t.col || 'ไม่เก็บคะแนน') + ' · ' + esc(t.type) + (t.quiz ? ' · ' + t.count + ' ข้อจากคลัง ' + t.pool + ' ข้อ' + (t.minutes ? ' · ' + t.minutes + ' นาที' : '') + ' · ทำได้ ' + (t.attempts || 'ไม่จำกัด') + (t.attempts ? ' ครั้ง' : '') : '') + '</div>' +
+          (t.quiz && t.pool < t.count ? '<div class="small" style="color:var(--bad)">ข้อสอบในคลังไม่พอ</div>' : '') + '</div>' +
+          '<button class="btn ghost sm" onclick="teacherTaskDetail(\'' + esc(t.id) + '\')">รายละเอียด</button>' +
+          (t.quiz ? '<button class="btn ghost sm" onclick="quizReport(\'' + esc(t.id) + '\')">ผล (' + t.done + ')</button>' : '') +
+          '<button class="btn sm ' + (t.open ? '' : 'soft') + '" onclick="toggleTask(\'' + esc(t.id) + '\',' + (!t.open) + ')">' + (t.open ? 'เปิดอยู่' : 'ปิดอยู่') + '</button></div>';
+      }).join('') + '</div></div><div id="qr"></div>';
+    if (S.t.reportTask) quizReport(S.t.reportTask);
+  }).catch(fail);
+}
+function teacherTaskDetail(id){
+  var t = (S.t.tasks || []).filter(function(x){ return x.id === id; })[0]; if (!t) return;
+  var m = document.createElement('div'); m.className = 'modal';
+  m.innerHTML = '<div class="box" style="max-width:720px"><div class="row"><h2 class="grow" style="margin:0">' + esc(t.title) + '</h2><button class="btn ghost sm" id="mx">ปิด</button></div>' + taskDetailHtml(t, true) +
+    '<p class="small muted" style="margin-top:16px">แก้ข้อความได้ในแท็บ "งาน" ของ Google Sheet คอลัมน์ O–T (ใช้ | คั่นแต่ละข้อ)</p></div>';
+  document.body.appendChild(m); m.querySelector('#mx').onclick = function(){ m.remove(); };
+  m.onclick = function(e){ if (e.target === m) m.remove(); };
+}
+function toggleTask(id, open){ call('tToggleTask', { token: S.tToken, taskId: id, open: open }).then(function(){ toast(open ? 'เปิดให้นักเรียนทำแล้ว' : 'ปิดแล้ว'); tQuiz(); }).catch(fail); }
+function quizReport(id){
+  S.t.reportTask = id;
+  var tab = S.t.reportTab || '';
+  $('#qr').innerHTML = '<div class="spin"></div>';
+  call('tQuizReport', { token: S.tToken, taskId: id, tab: tab }).then(function(r){
+    var h = '<div class="card"><div class="row"><h2 class="grow" style="margin:0">' + esc(r.task.title) + '</h2><div style="min-width:140px">' + classSelect('rc', tab, 'ทุกห้อง') + '</div></div>' +
+      '<div class="grid g3" style="margin:12px 0"><div class="stat"><span>คนที่ทำ</span><b>' + r.students.length + '</b><span>' + r.attempts + ' ครั้ง</span></div><div class="stat"><span>คะแนนเฉลี่ย (ครั้งที่ดีที่สุด)</span><b>' + fmtNum(r.mean) + '</b></div><div class="stat"><span>สูงสุด / ต่ำสุด</span><b>' + fmtNum(r.maxScore) + ' / ' + fmtNum(r.minScore) + '</b></div></div>';
+    if (r.items.length) h += '<h3>วิเคราะห์รายข้อ <span class="muted small">(p = สัดส่วนตอบถูก · p &lt; 0.2 ยากมาก/อาจเฉลยผิด · p &gt; 0.8 ง่ายมาก)</span></h3><div class="tbl"><table><thead><tr><th>รหัส</th><th class="l">คำถาม</th><th>คนตอบ</th><th>p</th><th>ก</th><th>ข</th><th>ค</th><th>ง</th><th>ไม่ตอบ</th></tr></thead><tbody>' +
+      r.items.map(function(it){ var bad = it.p !== null && (it.p < 0.2 || it.p > 0.8); return '<tr><td>' + esc(it.qid) + '</td><td class="l" style="white-space:normal;min-width:260px">' + esc(it.q) + '</td><td>' + it.n + '</td><td><b style="color:' + (bad ? 'var(--bad)' : 'inherit') + '">' + fmtNum(it.p) + '</b></td>' + ['ก','ข','ค','ง'].map(function(k){ return '<td style="' + (k === it.key ? 'background:var(--ok2);font-weight:600' : '') + '">' + (it.pick[k] || 0) + '</td>'; }).join('') + '<td>' + (it.pick['-'] || 0) + '</td></tr>'; }).join('') + '</tbody></table></div>';
+    if (r.students.length) h += '<h3 style="margin-top:14px">รายชื่อ</h3><div class="tbl"><table><thead><tr><th>ห้อง</th><th>เลขประจำตัว</th><th class="l">ชื่อ</th><th>ถูก</th><th>คะแนน</th><th>ครั้ง</th><th></th></tr></thead><tbody>' +
+      r.students.map(function(s){ return '<tr><td>' + esc(s.cls) + '</td><td>' + esc(s.id) + '</td><td class="l">' + esc(s.name) + '</td><td>' + s.correct + '/' + s.total + '</td><td>' + fmtNum(s.score) + '/' + fmtNum(s.max) + '</td><td>' + s.attempts + '</td><td><button class="btn ghost sm" onclick="resetAtt(\'' + esc(r.task.id) + '\',\'' + esc(s.id) + '\',\'' + esc(s.name) + '\')">ให้สอบใหม่</button></td></tr>'; }).join('') + '</tbody></table></div>';
+    $('#qr').innerHTML = h + '</div>';
+    $('#rc').onchange = function(){ S.t.reportTab = this.value; quizReport(id); };
+  }).catch(fail);
+}
+function resetAtt(taskId, id, name){
+  confirmBox('ยกเลิกผลสอบทั้งหมดของ ' + name + ' ในงานนี้ เพื่อให้ทำใหม่ได้?\n(คะแนนในแท็บห้องเรียนจะไม่ถูกลบ หากต้องการลบให้แก้ในตารางคะแนน)', 'ยืนยัน', function(){
+    call('tResetAttempt', { token: S.tToken, taskId: taskId, id: id }).then(function(r){ toast('ยกเลิก ' + r.cancelled + ' ครั้ง'); quizReport(taskId); }).catch(fail);
+  });
+}
+
+/* ================= ชุดฝึกทักษะการเขียนโปรแกรม (นักเรียน) ================= */
+var PY_BASE = window.PYODIDE_BASE || 'https://cdn.jsdelivr.net/npm/pyodide@314.0.7/';
+var P_KIND = { mcq:'เลือกตอบ', trace:'ไล่โค้ด', parsons:'เรียงบล็อกโค้ด', code:'เขียนโค้ด', debug:'หาจุดผิด' };
+var PY_RUNNER = [
+  'import sys, io, builtins, traceback',
+  '_ERR_TH = {',
+  ' "SyntaxError": "เขียนคำสั่งผิดรูปแบบ (ลืม : หรือวงเล็บ/เครื่องหมายคำพูดไม่ครบ)",',
+  ' "IndentationError": "ย่อหน้าไม่ถูกต้อง (บรรทัดใต้ : ต้องเว้น 4 ช่อง)",',
+  ' "TabError": "ใช้ Tab ปนกับเว้นวรรค ให้ใช้เว้นวรรค 4 ช่อง",',
+  ' "NameError": "ใช้ชื่อตัวแปรหรือคำสั่งที่ยังไม่ได้สร้าง (สะกดผิดหรือไม่)",',
+  ' "TypeError": "ใช้ข้อมูลผิดชนิด เช่น เอาข้อความไปบวกกับตัวเลข",',
+  ' "ValueError": "แปลงข้อมูลไม่ได้ เช่น int() กับข้อความที่ไม่ใช่ตัวเลข",',
+  ' "ZeroDivisionError": "หารด้วยศูนย์",',
+  ' "EOFError": "เรียก input() มากกว่าจำนวนข้อมูลที่โจทย์ให้",',
+  ' "TimeoutError": "โปรแกรมทำงานนานเกินไป (อาจวนซ้ำไม่รู้จบ)",',
+  '}',
+  'class _StepLimit(Exception):',
+  '    pass',
+  'def run_program(src, stdin_text, max_steps=200000):',
+  '    lines = iter(stdin_text.split("\\n")) if stdin_text != "" else iter(())',
+  '    def fake_input(prompt=""):',
+  '        try:',
+  '            return next(lines)',
+  '        except StopIteration:',
+  '            raise EOFError("input")',
+  '    out = io.StringIO()',
+  '    steps = [0]',
+  '    def tracer(frame, event, arg):',
+  '        if frame.f_code.co_filename == "<code>":',
+  '            steps[0] += 1',
+  '            if steps[0] > max_steps:',
+  '                raise _StepLimit()',
+  '        return tracer',
+  '    old_out, old_input = sys.stdout, builtins.input',
+  '    sys.stdout, builtins.input = out, fake_input',
+  '    err = ""',
+  '    try:',
+  '        code = compile(src, "<code>", "exec")',
+  '        sys.settrace(tracer)',
+  '        try:',
+  '            exec(code, {"__name__": "__main__"})',
+  '        finally:',
+  '            sys.settrace(None)',
+  '    except _StepLimit:',
+  '        err = _ERR_TH["TimeoutError"]',
+  '    except BaseException as e:',
+  '        name = type(e).__name__',
+  '        line = ""',
+  '        if isinstance(e, SyntaxError) and e.lineno:',
+  '            line = " (บรรทัด %d)" % e.lineno',
+  '        else:',
+  '            for fr in traceback.extract_tb(e.__traceback__):',
+  '                if fr.filename == "<code>":',
+  '                    line = " (บรรทัด %d)" % fr.lineno',
+  '        err = _ERR_TH.get(name, name) + line',
+  '    finally:',
+  '        sys.stdout, builtins.input = old_out, old_input',
+  '    return [out.getvalue(), err]'
+].join('\n');
+
+var PY = { fn: null, promise: null, state: 'idle', secs: 0 };
+function pyStatus(){
+  var el = $('#pystat'); if (!el) return;
+  el.innerHTML = PY.state === 'ready' ? 'ตัวรัน Python พร้อมใช้' + (PY.secs ? ' (' + PY.secs + ' วินาที)' : '') :
+    PY.state === 'fail' ? '<span style="color:var(--bad)">โหลดตัวรัน Python ไม่สำเร็จ — ตรวจอินเทอร์เน็ตแล้วรีเฟรช</span>' : 'กำลังโหลดตัวรัน Python… (ครั้งแรกอาจใช้เวลาสักครู่)';
+}
+function loadPy(){
+  if (PY.promise) return PY.promise;
+  PY.state = 'loading'; pyStatus();
+  var t0 = Date.now();
+  PY.promise = new Promise(function(resolve, reject){
+    function boot(){
+      window.loadPyodide({ indexURL: PY_BASE }).then(function(py){
+        py.runPython(PY_RUNNER);
+        PY.fn = py.globals.get('run_program');
+        PY.state = 'ready'; PY.secs = ((Date.now() - t0) / 1000).toFixed(1); pyStatus(); resolve();
+      }).catch(function(e){ PY.state = 'fail'; PY.promise = null; pyStatus(); reject(e); });
+    }
+    if (window.loadPyodide) return boot();
+    var s = document.createElement('script');
+    s.src = PY_BASE + 'pyodide.js';
+    s.onload = boot;
+    s.onerror = function(){ PY.state = 'fail'; PY.promise = null; pyStatus(); reject(new Error('load')); };
+    document.head.appendChild(s);
+  });
+  return PY.promise;
+}
+function pyRun(src, stdin){
+  var r = PY.fn(src, stdin), a = r.toJs(); if (r.destroy) r.destroy();
+  return { out: a[0], err: a[1] };
+}
+function pnorm(s){ var ls = String(s == null ? '' : s).replace(/\r\n/g, '\n').split('\n').map(function(l){ return l.replace(/\s+$/, ''); }); while (ls.length && ls[ls.length - 1] === '') ls.pop(); return ls.join('\n'); }
+
+/* ---------- รายการชุดฝึก ---------- */
+function practiceView(){
+  setTimeout(function(){
+    call('pSets', { token: S.token }).then(function(sets){
+      var el = $('#pv'); if (!el) return;
+      if (!sets.length) { el.innerHTML = '<div class="card"><h2>ฝึกเขียนโปรแกรม</h2><p class="muted">ครูยังไม่เปิดชุดฝึก</p></div>'; return; }
+      el.innerHTML = '<div class="card"><h2>ชุดฝึกทักษะการเขียนโปรแกรม</h2><p class="muted small" style="margin-top:0">ทำได้ไม่จำกัดครั้ง ระบบบันทึกผลให้ครูทุกครั้งที่กด “ตรวจคำตอบ” · ข้อเขียนโค้ดรันด้วยภาษา Python บนเครื่องของนักเรียน</p><div class="list">' +
+        sets.map(function(s){
+          var pct = s.n ? Math.round(s.ok / s.n * 100) : 0;
+          return '<div class="item"><div class="grow"><b>' + esc(s.title) + '</b><div class="muted small">' + esc(s.topic) + '</div><div class="bar" style="margin-top:6px;max-width:260px"><i style="width:' + pct + '%"></i></div><div class="small muted">ถูก ' + s.ok + '/' + s.n + ' ข้อ</div></div>' +
+            '<button class="btn sm ' + (s.ok === s.n ? 'soft' : '') + '" onclick="openPset(\'' + esc(s.id) + '\')">' + (s.ok === s.n ? 'ทบทวน' : s.tried ? 'ทำต่อ' : 'เริ่มทำ') + '</button></div>';
+        }).join('') + '</div></div>';
+    }).catch(function(e){ var el = $('#pv'); if (el) el.innerHTML = '<div class="alert bad">' + esc(e.message) + '</div>'; });
+  }, 0);
+  loadPy().catch(function(){});
+  return '<div id="pv"><div class="spin"></div></div>';
+}
+
+function pKey(){ return 'cc_p_' + (S.home ? S.home.profile.id : '') + '_' + S.pset.set.id; }
+function openPset(id){
+  loading();
+  call('pOpen', { token: S.token, setId: id }).then(function(d){
+    var local = {};
+    try { local = JSON.parse(store('cc_p_' + (S.home ? S.home.profile.id : '') + '_' + id) || '{}') || {}; } catch(e){}
+    S.pset = { set: d.set, items: d.items, state: d.state, cur: local.cur && local.cur < d.items.length ? local.cur : 0, loc: local.items || {}, enter: Date.now() };
+    d.items.forEach(function(it){
+      var l = S.pset.loc[it.id] || (S.pset.loc[it.id] = {});
+      var st = d.state[it.id];
+      if (it.type === 'code' || it.type === 'debug') { if (l.code == null) l.code = st && st.answer ? st.answer : (it.starter || ''); }
+      if (it.type === 'trace' && l.text == null) l.text = '';
+      if (it.type === 'parsons' && !l.order) l.order = [];
+      if (it.type === 'mcq' && l.sel == null) l.sel = null;
+      l.secs = l.secs || 0;
+    });
+    loadPy().catch(function(){});
+    psetView();
+  }).catch(function(e){ fail(e); S.pset = null; studentShell(); });
+}
+function psave(){ try { store(pKey(), JSON.stringify({ cur: S.pset.cur, items: S.pset.loc })); } catch(e){} }
+function ptrack(){ var P = S.pset; if (!P) return; var it = P.items[P.cur]; if (it) { var l = P.loc[it.id]; l.secs = (l.secs || 0) + Math.round((Date.now() - P.enter) / 1000); } P.enter = Date.now(); }
+function pclose(){ ptrack(); psave(); S.pset = null; S.view = 'practice'; studentShell(); }
+function pgo(i){ var P = S.pset; if (P.busy) return; ptrack(); P.cur = i; psave(); psetView(); window.scrollTo(0, 0); }
+
+function psetView(){
+  var P = S.pset, n = P.items.length;
+  var okN = P.items.filter(function(it){ return P.state[it.id] && P.state[it.id].status === 'ok'; }).length;
+  var dots = P.items.map(function(it, i){
+    var st = P.state[it.id], c = st ? (st.status === 'ok' ? 'pok' : 'pno') : '';
+    return '<button type="button" class="' + c + (i === P.cur ? ' cur' : '') + '" onclick="pgo(' + i + ')">' + (i + 1) + '</button>';
+  }).join('') + '<button type="button" class="psum' + (P.cur >= n ? ' cur' : '') + '" onclick="pgo(' + n + ')">สรุป</button>';
+  var p = S.home && S.home.profile;
+  $('#app').innerHTML = '<div class="top"><div class="in"><button onclick="pclose()">‹ กลับ</button><div class="grow"><h1>' + esc(P.set.title) + '</h1><small>' + (p ? esc(p.name) + ' · ' : '') + 'ถูก ' + okN + '/' + n + ' ข้อ</small></div></div></div>' +
+    '<div class="wrap" style="max-width:760px"><div class="dots pdots">' + dots + '</div><div class="small muted" id="pystat" style="margin:-4px 0 10px"></div><div id="pbody"></div></div>';
+  pyStatus();
+  if (P.cur >= n) return psummary();
+  pitem();
+}
+
+function pitem(){
+  var P = S.pset, it = P.items[P.cur], l = P.loc[it.id], st = P.state[it.id] || {};
+  var h = '<div class="card pcard"><div class="row small muted"><span class="chip s-practice">' + P_KIND[it.type] + '</span><span>ข้อ ' + (P.cur + 1) + ' จาก ' + P.items.length + '</span>' +
+    (st.attempts ? '<span>· ตรวจแล้ว ' + st.attempts + ' ครั้ง</span>' : '') + (st.status === 'ok' ? '<span class="chip s-graded">ทำถูกแล้ว</span>' : '') + '</div>';
+  h += '<div class="q">' + esc(it.prompt) + '</div>';
+  if (it.code) h += '<pre class="pcode">' + esc(it.code) + '</pre>';
+  if (it.type === 'mcq') {
+    h += it.choices.map(function(c, i){ return '<button type="button" class="opt' + (l.sel === i ? ' on' : '') + '" data-i="' + i + '" onclick="psel(' + i + ')"><span class="k">' + ['ก','ข','ค','ง','จ'][i] + '</span><span>' + esc(c) + '</span></button>'; }).join('');
+  } else if (it.type === 'trace') {
+    h += '<label for="pans">ผลลัพธ์ที่แสดงบนหน้าจอ</label><input type="text" id="pans" class="mono" autocomplete="off" autocapitalize="off" spellcheck="false" value="' + esc(l.text) + '">';
+  } else if (it.type === 'parsons') {
+    h += '<label>บล็อกโค้ด — แตะเพื่อนำไปต่อท้ายโปรแกรม</label><div class="zone" id="ppool"></div>' +
+      '<div class="row" style="margin-top:10px"><label class="grow" style="margin:0">โปรแกรมของฉัน — แตะบล็อกเพื่อเอาออก</label><button type="button" class="btn ghost sm" onclick="pclear()">เริ่มใหม่</button></div><div class="zone mine" id="pmine"></div>';
+  } else {
+    h += '<label for="ped">โค้ดของฉัน</label><div class="keys" id="pkeys">' + ['⇥ เว้น 4', ':', '(', ')', '"', '=', '<', '>', '%', '+'].map(function(k){ return '<button type="button" data-k="' + esc(k) + '">' + esc(k) + '</button>'; }).join('') + '</div>' +
+      '<textarea id="ped" class="editor" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off">' + esc(l.code) + '</textarea>' +
+      (it.type === 'debug' && it.starter ? '<div class="row" style="justify-content:flex-end"><button type="button" class="btn ghost sm" onclick="presetCode()">คืนโค้ดตั้งต้น</button></div>' : '') +
+      '<details style="margin-top:8px"><summary class="small" style="cursor:pointer;color:var(--pri)">ลองรันเองด้วยข้อมูลของฉัน</summary><label for="pin">ข้อมูลเข้า (1 บรรทัดต่อ input() 1 ครั้ง)</label><textarea id="pin" class="mono" rows="2" spellcheck="false">' + esc((it.tests && it.tests[0] && it.tests[0].in) || '') + '</textarea>' +
+      '<button type="button" class="btn ghost sm" style="margin-top:8px" onclick="ptry()">รันโค้ด</button><div id="ptry"></div></details>';
+  }
+  h += '<div class="row" style="margin-top:14px"><button type="button" class="btn" id="pchk" onclick="pcheck()">ตรวจคำตอบ</button><button type="button" class="btn ghost" onclick="phint()">' + (l.hint || st.hint ? 'คำใบ้' : 'ขอคำใบ้') + '</button></div>' +
+    '<div class="alert warn small' + (l.hint ? '' : ' hide') + '" id="phint" style="margin:12px 0 0"><b>คำใบ้</b> ' + esc(it.hint) + '</div><div id="pfb"></div></div>' +
+    '<div class="row"><button type="button" class="btn ghost" ' + (P.cur === 0 ? 'disabled' : '') + ' onclick="pgo(' + (P.cur - 1) + ')">‹ ข้อก่อนหน้า</button><span class="grow"></span><button type="button" class="btn soft" onclick="pgo(' + (P.cur + 1) + ')">' + (P.cur === P.items.length - 1 ? 'ไปหน้าสรุป ›' : 'ข้อถัดไป ›') + '</button></div>';
+  $('#pbody').innerHTML = h;
+  if (it.type === 'trace') $('#pans').oninput = function(){ l.text = this.value; psave(); };
+  if (it.type === 'parsons') pdrawBlocks();
+  if (it.type === 'code' || it.type === 'debug') pwireEditor(l);
+  if (l.last) pfeedback(it, l.last);
+}
+function psel(i){
+  var P = S.pset, it = P.items[P.cur], l = P.loc[it.id];
+  l.sel = i; l.last = null; psave();
+  Array.prototype.forEach.call(document.querySelectorAll('#pbody .opt'), function(b){ b.classList.remove('right', 'wrong'); b.classList.toggle('on', Number(b.dataset.i) === i); });
+  $('#pfb').innerHTML = '';
+}
+function phint(){ var P = S.pset, l = P.loc[P.items[P.cur].id]; l.hint = true; psave(); $('#phint').classList.remove('hide'); }
+function pclear(){ var P = S.pset, l = P.loc[P.items[P.cur].id]; l.order = []; l.last = null; psave(); pdrawBlocks(); $('#pfb').innerHTML = ''; }
+function presetCode(){ var P = S.pset, it = P.items[P.cur], l = P.loc[it.id]; confirmBox('คืนโค้ดเป็นแบบตั้งต้นของโจทย์? (โค้ดที่แก้ไว้จะหาย)', 'คืนโค้ด', function(){ l.code = it.starter; psave(); pitem(); }); }
+function pdrawBlocks(){
+  var P = S.pset, it = P.items[P.cur], l = P.loc[it.id], used = {};
+  l.order.forEach(function(i){ used[i] = 1; });
+  var pool = it.blocks.map(function(_, i){ return i; }).filter(function(i){ return !used[i]; });
+  $('#ppool').innerHTML = pool.length ? pool.map(function(i){ return '<button type="button" class="blk" data-a="' + i + '">' + esc(it.blocks[i]) + '</button>'; }).join('') : '<div class="muted small" style="padding:6px">ใช้ครบทุกบล็อกแล้ว</div>';
+  $('#pmine').innerHTML = l.order.length ? l.order.map(function(i, k){ return '<button type="button" class="blk" data-r="' + k + '">' + esc(it.blocks[i]) + '</button>'; }).join('') : '<div class="muted small" style="padding:6px">ยังว่างอยู่ — แตะบล็อกด้านบนเพื่อเริ่ม</div>';
+  $('#ppool').onclick = function(e){ var b = e.target.closest('[data-a]'); if (!b) return; l.order.push(Number(b.dataset.a)); l.last = null; psave(); pdrawBlocks(); $('#pfb').innerHTML = ''; };
+  $('#pmine').onclick = function(e){ var b = e.target.closest('[data-r]'); if (!b) return; l.order.splice(Number(b.dataset.r), 1); l.last = null; psave(); pdrawBlocks(); $('#pfb').innerHTML = ''; };
+}
+function pins(ed, t){ var a = ed.selectionStart, b = ed.selectionEnd; ed.value = ed.value.slice(0, a) + t + ed.value.slice(b); ed.selectionStart = ed.selectionEnd = a + t.length; ed.dispatchEvent(new Event('input')); }
+function pwireEditor(l){
+  var ed = $('#ped');
+  ed.oninput = function(){ l.code = ed.value; psave(); };
+  ed.onkeydown = function(e){
+    if (e.key === 'Tab') { e.preventDefault(); pins(ed, '    '); }
+    else if (e.key === 'Enter') { var v = ed.value, p = ed.selectionStart, ls = v.lastIndexOf('\n', p - 1) + 1, line = v.slice(ls, p);
+      var ind = (line.match(/^ */) || [''])[0]; if (/:\s*$/.test(line)) ind += '    '; e.preventDefault(); pins(ed, '\n' + ind); }
+  };
+  $('#pkeys').onclick = function(e){ var b = e.target.closest('[data-k]'); if (!b) return; var k = b.dataset.k; pins(ed, k.indexOf('เว้น') >= 0 ? '    ' : k); ed.focus(); };
+}
+function ptry(){
+  var out = $('#ptry'); out.innerHTML = '<div class="alert info small" style="margin:8px 0 0">กำลังรัน…</div>';
+  loadPy().then(function(){
+    var r = pyRun($('#ped').value, $('#pin').value.replace(/\r\n/g, '\n'));
+    out.innerHTML = '<div class="alert ' + (r.err ? 'bad' : 'info') + ' small" style="margin:8px 0 0"><b>ผลลัพธ์</b><pre class="pout">' + esc(r.out || '(ไม่มีผลลัพธ์)') + '</pre>' + (r.err ? '⚠ ' + esc(r.err) : '') + '</div>';
+  }).catch(function(){ out.innerHTML = '<div class="alert bad small" style="margin:8px 0 0">ยังรันโค้ดไม่ได้ เพราะโหลดตัวรัน Python ไม่สำเร็จ</div>'; });
+}
+
+function pcheck(){
+  var P = S.pset, it = P.items[P.cur], l = P.loc[it.id], fb = $('#pfb');
+  if (P.busy) return;
+  var payload = { token: S.token, setId: P.set.id, itemId: it.id, hint: !!l.hint };
+  if (it.type === 'mcq') {
+    if (l.sel == null) { fb.innerHTML = '<div class="alert info small" style="margin:12px 0 0">เลือกคำตอบก่อน แล้วกดตรวจคำตอบ</div>'; return; }
+    payload.answer = l.sel; return psend(it, l, payload, null);
+  }
+  if (it.type === 'trace') {
+    if (!String(l.text).trim()) { fb.innerHTML = '<div class="alert info small" style="margin:12px 0 0">พิมพ์ผลลัพธ์ก่อน แล้วกดตรวจคำตอบ</div>'; return; }
+    payload.answer = l.text; return psend(it, l, payload, null);
+  }
+  var src = it.type === 'parsons' ? l.order.map(function(i){ return it.blocks[i]; }).join('\n') : l.code;
+  if (it.type === 'parsons' && l.order.length < it.blocks.length) { fb.innerHTML = '<div class="alert info small" style="margin:12px 0 0">ยังใช้บล็อกไม่ครบ (' + l.order.length + '/' + it.blocks.length + ')</div>'; return; }
+  if (!String(src).trim()) { fb.innerHTML = '<div class="alert info small" style="margin:12px 0 0">เขียนโค้ดก่อน แล้วกดตรวจคำตอบ</div>'; return; }
+  P.busy = true; $('#pchk').disabled = true;
+  fb.innerHTML = '<div class="alert info small" style="margin:12px 0 0">' + (PY.fn ? 'กำลังรันโค้ดกับชุดทดสอบ…' : 'กำลังโหลดตัวรัน Python (ครั้งแรกอาจใช้เวลาสักครู่)…') + '</div>';
+  loadPy().then(function(){
+    var runs = it.tests.map(function(t){ return pyRun(src, t.in); });
+    payload.answer = src; payload.outputs = runs.map(function(r){ return r.out; }); payload.errs = runs.map(function(r){ return r.err; });
+    P.busy = false;
+    psend(it, l, payload, runs);
+  }).catch(function(){ P.busy = false; var b = $('#pchk'); if (b) b.disabled = false; fb.innerHTML = '<div class="alert bad small" style="margin:12px 0 0">ตรวจไม่ได้ เพราะโหลดตัวรัน Python ไม่สำเร็จ ลองรีเฟรชหน้าแล้วตรวจใหม่ (โค้ดที่เขียนไว้ไม่หาย)</div>'; });
+}
+function psend(it, l, payload, runs){
+  var P = S.pset; ptrack(); payload.secs = l.secs || 0;
+  P.busy = true; var b = $('#pchk'); if (b) b.disabled = true;
+  if (!runs) $('#pfb').innerHTML = '<div class="alert info small" style="margin:12px 0 0">กำลังตรวจ…</div>';
+  call('pCheck', payload).then(function(r){
+    P.busy = false; l.secs = 0;
+    P.state[it.id] = { status: r.status, attempts: r.attempts, firstOk: r.firstOk, hint: !!l.hint || (P.state[it.id] || {}).hint, answer: payload.answer };
+    l.last = { pass: r.pass, sel: payload.answer, answer: r.answer, rows: r.rows ? r.rows.map(function(x, i){ return { pass: x.pass, hidden: !!x.hidden, exp: x.exp, inp: it.tests[i].in, out: runs ? runs[i].out : '', err: runs ? runs[i].err : '' }; }) : null };
+    psave();
+    if (S.pset && S.pset.items[S.pset.cur] === it) { psetView(); }
+  }).catch(function(e){ P.busy = false; var bb = $('#pchk'); if (bb) bb.disabled = false; $('#pfb').innerHTML = '<div class="alert bad small" style="margin:12px 0 0">ส่งผลไม่สำเร็จ: ' + esc(e.message) + ' — กดตรวจอีกครั้ง</div>'; });
+}
+function pfeedback(it, res){
+  var h = '';
+  if (it.type === 'mcq') {
+    Array.prototype.forEach.call(document.querySelectorAll('#pbody .opt'), function(b){ if (Number(b.dataset.i) === res.sel) { b.classList.remove('on'); b.classList.add(res.pass ? 'right' : 'wrong'); } });
+    h = res.pass ? '<div class="alert info" style="margin:12px 0 0;background:var(--ok2);color:var(--ok)">✓ ถูกต้อง</div>' : '<div class="alert bad" style="margin:12px 0 0">✗ คำตอบที่เลือกยังไม่ถูก ลองอ่านโจทย์อีกครั้ง หรือกดขอคำใบ้</div>';
+  } else if (it.type === 'trace') {
+    h = res.pass ? '<div class="alert info" style="margin:12px 0 0;background:var(--ok2);color:var(--ok)">✓ ถูกต้อง ผลลัพธ์คือ ' + esc(res.answer) + '</div>' : '<div class="alert bad" style="margin:12px 0 0">✗ ยังไม่ถูก ลองไล่โค้ดทีละบรรทัดโดยจดค่าของตัวแปรไว้</div>';
+  } else if (res.rows) {
+    var passN = res.rows.filter(function(r){ return r.pass; }).length;
+    h = res.pass ? '<div class="alert info" style="margin:12px 0 0;background:var(--ok2);color:var(--ok)">✓ ผ่านทุกชุดทดสอบ (' + passN + '/' + res.rows.length + ')</div>' : '<div class="alert bad" style="margin:12px 0 0">✗ ผ่าน ' + passN + ' จาก ' + res.rows.length + ' ชุดทดสอบ</div>';
+    var fe = res.rows.filter(function(r){ return r.err; })[0];
+    if (fe) h += '<div class="alert bad small" style="margin:8px 0 0">⚠ ' + esc(fe.err) + '</div>';
+    var hn = 0;
+    h += '<div class="tbl" style="margin-top:10px;max-height:none"><table class="ptests"><thead><tr><th>ชุด</th><th class="l">ข้อมูลเข้า</th><th class="l">ควรได้</th><th class="l">ได้จริง</th><th>ผล</th></tr></thead><tbody>' +
+      res.rows.map(function(r, i){
+        if (r.hidden) { hn++; return '<tr><td>ซ่อน ' + hn + '</td><td colspan="3" class="l muted small" style="white-space:normal">ซ่อนข้อมูลไว้ ใช้ตรวจว่าถูกทุกกรณี</td><td class="' + (r.pass ? 'pp' : 'pf') + '">' + (r.pass ? 'ผ่าน' : 'ไม่ผ่าน') + '</td></tr>'; }
+        return '<tr><td>' + (i + 1) + '</td><td class="l mono">' + esc(String(r.inp).replace(/\n/g, ' ↵ ')) + '</td><td class="l mono">' + esc(r.exp) + '</td><td class="l mono">' + esc(pnorm(r.out) || '—') + '</td><td class="' + (r.pass ? 'pp' : 'pf') + '">' + (r.pass ? 'ผ่าน' : 'ไม่ผ่าน') + '</td></tr>';
+      }).join('') + '</tbody></table></div>';
+  }
+  if (res.pass && S.pset.cur < S.pset.items.length - 1) h += '<p class="small muted" style="margin:8px 0 0">กด “ข้อถัดไป” เมื่อพร้อม</p>';
+  $('#pfb').innerHTML = h;
+}
+function psummary(){
+  var P = S.pset, okN = 0, hints = 0;
+  var rows = P.items.map(function(it, i){
+    var st = P.state[it.id], l = P.loc[it.id];
+    if (st && st.status === 'ok') okN++;
+    if ((st && st.hint) || l.hint) hints++;
+    var lab = !st ? '<span class="muted">ยังไม่ทำ</span>' : st.status === 'ok' ? '<b style="color:var(--ok)">ถูก</b>' : '<b style="color:var(--bad)">ยังไม่ถูก</b>';
+    return '<tr><td>' + (i + 1) + '</td><td class="l">' + P_KIND[it.type] + '</td><td>' + lab + '</td><td>' + (st ? st.attempts : 0) + '</td><td>' + ((st && st.hint) || l.hint ? 'ใช้' : '–') + '</td><td><button class="btn ghost sm" onclick="pgo(' + i + ')">ไปข้อนี้</button></td></tr>';
+  }).join('');
+  var todo = P.items.length - okN;
+  $('#pbody').innerHTML = '<div class="card"><h2>สรุปผล · ' + esc(P.set.topic) + '</h2><div class="row" style="align-items:baseline"><span class="big">' + okN + '/' + P.items.length + '</span><span>ข้อที่ทำถูก · ใช้คำใบ้ ' + hints + ' ข้อ</span></div>' +
+    '<div class="tbl" style="margin-top:12px;max-height:none"><table><thead><tr><th>ข้อ</th><th class="l">ประเภท</th><th>สถานะ</th><th>ตรวจ (ครั้ง)</th><th>คำใบ้</th><th></th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
+    (todo ? '<div class="alert info small" style="margin-top:12px">ยังเหลือ ' + todo + ' ข้อที่ยังไม่ถูก แตะเลขข้อด้านบนเพื่อกลับไปทำต่อ</div>' : '<div class="alert info" style="margin-top:12px;background:var(--ok2);color:var(--ok)">ทำถูกครบทุกข้อแล้ว เยี่ยมมาก</div>') +
+    '<p class="small muted">ผลทุกข้อบันทึกให้ครูแล้วอัตโนมัติ ไม่ต้องกดส่ง</p><button class="btn ghost" onclick="pclose()">‹ กลับหน้ารวมชุดฝึก</button></div>';
+}
+window.addEventListener('pagehide', function(){ if (S.pset) { ptrack(); psave(); } });
+
+/* ================= ชุดฝึก (ครู) ================= */
+function tPractice(){
+  var setId = S.t.pset || '', tab = S.t.ptab || (S.t.classes[0] && S.t.classes[0].tab) || '';
+  call('tPractice', { token: S.tToken, tab: tab, setId: setId }).then(function(r){
+    if (r.empty) { $('#tv').innerHTML = '<div class="card"><h2>ชุดฝึกทักษะ</h2><p class="muted">ยังไม่มีโจทย์ — เปิด Google Sheet แล้วเลือกเมนู ห้องเรียน ม.3 › ติดตั้ง/เพิ่มโจทย์ชุดฝึก</p></div>'; return; }
+    S.t.pset = r.set.id; S.t.ptab = r.tab; S.t.prep = r;
+    var h = '<div class="tabs">' + r.sets.map(function(s){ return '<button class="' + (s.id === r.set.id ? 'on' : '') + '" onclick="S.t.pset=\'' + esc(s.id) + '\';tPractice()">' + esc(s.title) + (s.active ? '' : ' · ปิด') + '</button>'; }).join('') + '</div>';
+    h += '<div class="card"><div class="row"><div class="grow"><h2 style="margin:0">' + esc(r.set.title) + '</h2><div class="muted small">' + esc(r.set.topic) + ' · ' + r.items.length + ' ข้อ</div></div>' +
+      '<button class="btn sm ' + (r.set.active ? '' : 'soft') + '" onclick="tPToggle(\'' + esc(r.set.id) + '\',' + (!r.set.active) + ')">' + (r.set.active ? 'เปิดให้นักเรียนอยู่ · กดเพื่อปิด' : 'ปิดอยู่ · กดเพื่อเปิด') + '</button></div>' +
+      '<p class="muted small" style="margin:8px 0 0">แก้ไขโจทย์ เฉลย ชุดทดสอบ หรือเปิด/ปิดรายข้อได้ในแท็บ “ชุดฝึก” ของ Google Sheet · ผลทุกครั้งที่นักเรียนกดตรวจอยู่ในแท็บ “ผลชุดฝึก”</p></div>';
+    h += '<div class="card"><h2>ภาพรวมทุกห้อง</h2><div class="tbl" style="max-height:none"><table><thead><tr><th class="l">ห้อง</th><th>นักเรียน</th><th>เริ่มทำแล้ว</th><th>ถูกครบทุกข้อ</th><th>ถูกเฉลี่ย (ข้อ)</th></tr></thead><tbody>' +
+      r.classes.map(function(c){ return '<tr><td class="l"><button class="tlink" onclick="S.t.ptab=\'' + esc(c.tab) + '\';tPractice()"><span class="ttl">' + esc(c.label) + '</span></button></td><td>' + c.n + '</td><td>' + c.started + '</td><td>' + c.done + '</td><td>' + heat(r.items.length && c.n ? Math.round(c.avgOk / r.items.length * 100) : null) + ' <span class="small muted">' + c.avgOk + '</span></td></tr>'; }).join('') + '</tbody></table></div></div>';
+    h += '<div class="card"><div class="row"><h2 class="grow" style="margin:0">รายคน</h2><div style="min-width:140px">' + classSelect('ptab', r.tab) + '</div></div>' +
+      '<p class="muted small" style="margin:6px 0 10px">✓ = ถูก (ตัวเลข = จำนวนครั้งที่ตรวจ) · ✗ = ยังไม่ถูก · ? = ใช้คำใบ้ · แตะช่องเพื่อดูคำตอบล่าสุด</p>' +
+      '<div class="tbl"><table><thead><tr><th class="sticky">เลขที่</th><th class="l">ชื่อ</th>' + r.items.map(function(it, i){ return '<th title="' + esc(it.id) + '">' + (i + 1) + (it.active ? '' : '<br><span class="small muted">ปิด</span>') + '</th>'; }).join('') + '<th>ถูก</th></tr></thead><tbody>' +
+      r.students.map(function(s){
+        return '<tr><td class="sticky">' + esc(s.no) + '</td><td class="l">' + esc(s.name) + '</td>' + r.items.map(function(it){
+          var c = s.cells[it.id];
+          if (!c) return '<td class="muted">–</td>';
+          return '<td><button class="pcell ' + (c.s === 'ok' ? 'ok' : 'no') + '" onclick="tPAnswer(\'' + esc(s.id) + '\',\'' + esc(it.id) + '\')">' + (c.s === 'ok' ? '✓' : '✗') + '<sub>' + c.a + (c.h ? '?' : '') + '</sub></button></td>';
+        }).join('') + '<td><b>' + s.ok + '</b>/' + r.items.length + '</td></tr>';
+      }).join('') + '</tbody></table></div></div>';
+    h += '<div class="card"><h2>วิเคราะห์รายข้อ (ทุกห้อง)</h2><p class="muted small" style="margin-top:0">ใช้ดูว่าข้อใดยาก ควรสอนซ้ำ — ร้อยละถูกต่ำ หรือตรวจหลายครั้ง/ใช้คำใบ้มาก แปลว่านักเรียนยังไม่เข้าใจ</p><div class="tbl" style="max-height:none"><table><thead><tr><th>ข้อ</th><th class="l">ประเภท</th><th class="l">โจทย์</th><th>ทำ (คน)</th><th>ถูก</th><th>ถูกครั้งแรก</th><th>ตรวจเฉลี่ย</th><th>ใช้คำใบ้</th><th>เวลาเฉลี่ย (นาที)</th></tr></thead><tbody>' +
+      r.itemStats.map(function(x, i){ return '<tr><td>' + (i + 1) + '</td><td class="l">' + esc(x.typeLabel) + '</td><td class="l" style="white-space:normal;min-width:240px">' + esc(x.prompt.length > 90 ? x.prompt.slice(0, 90) + '…' : x.prompt) + '</td><td>' + x.tried + '</td><td>' + heat(x.pctOk) + '</td><td>' + (x.pctFirst === null ? '–' : x.pctFirst + '%') + '</td><td>' + fmtNum(x.avgAtt) + '</td><td>' + (x.pctHint === null ? '–' : x.pctHint + '%') + '</td><td>' + fmtNum(x.avgMin) + '</td></tr>'; }).join('') + '</tbody></table></div></div>';
+    $('#tv').innerHTML = h;
+    $('#ptab').onchange = function(){ S.t.ptab = this.value; tPractice(); };
+  }).catch(fail);
+}
+function tPToggle(setId, open){
+  confirmBox((open ? 'เปิด' : 'ปิด') + 'ชุดฝึกนี้ให้นักเรียนทุกห้อง?' + (open ? '\n(ชุดที่เป็นร่าง ควรตรวจโจทย์ในแท็บ “ชุดฝึก” ก่อนเปิด)' : ''), open ? 'เปิด' : 'ปิด', function(){
+    call('tPracticeToggle', { token: S.tToken, setId: setId, open: open }).then(function(){ toast(open ? 'เปิดชุดฝึกแล้ว' : 'ปิดชุดฝึกแล้ว'); tPractice(); }).catch(fail);
+  });
+}
+function tPAnswer(id, itemId){
+  call('tPracticeAnswer', { token: S.tToken, id: id, itemId: itemId }).then(function(a){
+    if (!a) return toast('ยังไม่มีคำตอบ');
+    var m = document.createElement('div'); m.className = 'modal';
+    m.innerHTML = '<div class="box" style="max-width:720px"><div class="row"><h2 class="grow" style="margin:0">' + esc(a.name) + ' · ' + esc(a.itemId) + '</h2><button class="btn ghost sm" id="mx">ปิด</button></div>' +
+      '<p class="small muted">' + esc(a.tab) + ' เลขที่ ' + esc(a.no) + ' · ' + (a.status === 'ok' ? 'ถูก' : 'ยังไม่ถูก') + ' · ตรวจ ' + a.attempts + ' ครั้ง' + (a.firstOk ? ' (ถูกครั้งที่ ' + a.firstOk + ')' : '') + (a.hint ? ' · ใช้คำใบ้' : '') + ' · ' + fmtTime(a.time) + '</p>' +
+      '<p>' + esc(a.prompt) + '</p><label>คำตอบล่าสุด</label><pre class="pcode">' + esc(a.answer || '(ว่าง)') + '</pre></div>';
+    document.body.appendChild(m); m.querySelector('#mx').onclick = function(){ m.remove(); };
+    m.onclick = function(e){ if (e.target === m) m.remove(); };
+  }).catch(fail);
+}
+
+start();
+</script>
+</body>
+</html>
