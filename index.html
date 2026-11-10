@@ -125,6 +125,12 @@ ol.steps{padding-left:22px;margin:6px 0} ol.steps li{margin:6px 0}
 .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin:12px 0}
 .meta div{background:var(--bg);border-radius:10px;padding:8px 10px} .meta span{display:block;font-size:12px;color:var(--ink2)}
 .hide{display:none!important}
+.thumbl{display:inline-flex;flex-direction:column;align-items:center;gap:4px;vertical-align:top}
+.thumbl img{width:96px;height:96px;object-fit:cover;border-radius:8px;display:block}
+.wfiles{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+.wfile{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:6px}
+.wfile img{width:52px;height:52px;object-fit:cover;border-radius:7px;flex:none}
+.wfile .wicon{width:52px;height:52px;display:grid;place-items:center;font-size:24px;background:var(--bg);border-radius:7px;flex:none}
 /* ชุดฝึกทักษะ */
 .mono,pre.pcode,.editor,.blk,.pout{font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,'IBM Plex Sans Thai',monospace}
 pre.pcode{margin:0 0 12px;background:#f3f5f4;border:1px solid var(--line);border-radius:10px;padding:10px 12px;overflow-x:auto;font-size:14px;line-height:1.6;white-space:pre}
@@ -413,7 +419,7 @@ function taskView(){
     '<div class="card" style="margin-top:12px"><div class="row"><div class="grow"><h2 style="font-size:19px;margin:0">' + esc(t.title) + '</h2></div>' + chip(t.status) + '</div>' +
     (t.score !== null && t.score !== undefined ? '<div class="alert info small" style="margin:10px 0 0">ได้ ' + fmtNum(t.score) + ' / ' + fmtNum(t.max) + ' คะแนน</div>' : '') +
     (t.submission && t.submission.comment ? '<div class="alert warn small" style="margin:10px 0 0">ครู: ' + esc(t.submission.comment) + '</div>' : '') +
-    (t.submission ? '<p class="small muted">ส่งล่าสุด ' + fmtTime(t.submission.time) + '</p>' : '') +
+    (t.submission ? '<p class="small muted">ส่งล่าสุด ' + fmtTime(t.submission.time) + (function(){ var ls = String(t.submission.link || '').split(/\s+/).filter(String); return ls.length ? ' · ' + ls.map(function(u, k){ return '<a href="' + esc(u) + '" target="_blank">ไฟล์ ' + (k + 1) + '</a>'; }).join(' ') : ''; })() + '</p>' : '') +
     taskDetailHtml(t, false) + (act ? '<div style="margin-top:18px">' + act.replace('btn sm', 'btn block') + '</div>' : '') + '</div>';
 }
 function taskAction(t){
@@ -427,30 +433,111 @@ function taskAction(t){
 }
 
 /* work submission */
+var MAX_FILES = 10;
+function fmtSize(n){ return n >= 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB'; }
+/* ย่อรูปจากกล้องมือถือ (มักใหญ่ 3–8 MB) ให้ด้านยาวไม่เกิน 1600 px ก่อนส่ง — อ่านงานได้ชัด ส่งเร็ว ไม่เต็มโควต้า */
+function shrinkImage(f){
+  return new Promise(function(resolve){
+    if (!/^image\/(jpeg|png|webp|heic|heif)$/i.test(f.type) || f.size < 400 * 1024) return resolve(f);
+    var url = URL.createObjectURL(f), img = new Image();
+    img.onload = function(){
+      var k = Math.min(1, 1600 / Math.max(img.width, img.height));
+      var c = document.createElement('canvas'); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      var g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      c.toBlob(function(bl){
+        if (!bl || bl.size >= f.size) return resolve(f);
+        resolve(new File([bl], f.name.replace(/\.[^.]+$/, '') + '.jpg', { type: 'image/jpeg' }));
+      }, 'image/jpeg', 0.85);
+    };
+    img.onerror = function(){ URL.revokeObjectURL(url); resolve(f); };
+    img.src = url;
+  });
+}
+function readB64(f){
+  return new Promise(function(resolve, reject){
+    var rd = new FileReader();
+    rd.onload = function(){ resolve(String(rd.result).split(',')[1] || ''); };
+    rd.onerror = function(){ reject(new Error('อ่านไฟล์ ' + f.name + ' ไม่ได้')); };
+    rd.readAsDataURL(f);
+  });
+}
 function workModal(id){
   var t = S.home.tasks.filter(function(x){ return x.id === id; })[0];
+  var prevLinks = t.submission ? String(t.submission.link || '').split(/\s+/).filter(String) : [];
+  var files = [];  // { file, url (preview) }
   var m = document.createElement('div'); m.className = 'modal';
   m.innerHTML = '<div class="box"><h2 style="margin-top:0">' + esc(t.title) + '</h2>' + (t.detail ? '<p class="muted small">' + esc(t.detail) + '</p>' : '') +
-    (t.submission ? '<div class="alert info small">ส่งล่าสุด ' + fmtTime(t.submission.time) + ' — การส่งใหม่จะแทนที่ของเดิม</div>' : '') +
-    '<label>ลิงก์ผลงาน (Google Drive, Canva, Colab ฯลฯ)</label><input type="url" id="wl" placeholder="https://..." value="">' +
-    '<label>หรือแนบไฟล์ (รูปภาพ / PDF ไม่เกิน 10 MB)</label><input type="file" id="wf" accept="image/*,application/pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.py">' +
+    (t.submission ? '<div class="alert info small">ส่งล่าสุด ' + fmtTime(t.submission.time) + (prevLinks.length ? ' · แนบไว้ ' + prevLinks.length + ' รายการ' : '') + '</div>' +
+      (prevLinks.length ? '<label class="row" style="gap:8px;color:var(--ink)"><input type="checkbox" id="wk" checked style="width:auto"> เก็บไฟล์/ลิงก์ที่ส่งไว้เดิมด้วย (ส่งเพิ่ม)</label>' : '') : '') +
+    '<label>แนบรูปภาพหรือไฟล์ (ได้หลายไฟล์ สูงสุด ' + MAX_FILES + ' ไฟล์)</label>' +
+    '<div class="wfiles" id="wlist"></div>' +
+    '<div class="row"><label class="btn soft sm" style="margin:0;cursor:pointer">📷 ถ่ายรูป<input type="file" id="wcam" accept="image/*" capture="environment" style="display:none"></label>' +
+    '<label class="btn soft sm" style="margin:0;cursor:pointer">＋ เลือกไฟล์/รูป<input type="file" id="wf" multiple accept="image/*,application/pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.py,.sb3" style="display:none"></label>' +
+    '<span class="small muted" id="wcount"></span></div>' +
+    '<label>หรือวางลิงก์ผลงาน (Google Drive, Canva, Colab ฯลฯ)</label><input type="url" id="wl" placeholder="https://..." value="">' +
     '<label>ข้อความถึงครู (ถ้ามี)</label><textarea id="wn" rows="2"></textarea>' +
-    '<div class="row" style="margin-top:16px"><button class="btn ghost grow" id="wc">ยกเลิก</button><button class="btn grow" id="ws">ส่งงาน</button></div></div>';
+    '<div class="small" id="wprog" style="min-height:20px;margin-top:8px;color:var(--pri)"></div>' +
+    '<div class="row" style="margin-top:8px"><button class="btn ghost grow" id="wc">ยกเลิก</button><button class="btn grow" id="ws">ส่งงาน</button></div></div>';
   document.body.appendChild(m);
-  m.querySelector('#wc').onclick = function(){ m.remove(); };
+  var busy = false;
+  function draw(){
+    m.querySelector('#wlist').innerHTML = files.map(function(x, i){
+      var isImg = /^image\//.test(x.file.type);
+      return '<div class="wfile">' + (isImg ? '<img src="' + x.url + '" alt="">' : '<span class="wicon">📄</span>') +
+        '<span class="grow small" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(x.file.name) + '<br><span class="muted">' + fmtSize(x.file.size) + '</span></span>' +
+        '<button type="button" class="btn ghost sm" data-rm="' + i + '"' + (busy ? ' disabled' : '') + '>ลบ</button></div>';
+    }).join('');
+    m.querySelector('#wcount').textContent = files.length ? 'เลือกแล้ว ' + files.length + ' ไฟล์' : '';
+  }
+  function addFiles(list){
+    var arr = Array.prototype.slice.call(list || []);
+    var room = MAX_FILES - files.length;
+    if (arr.length > room) toast('แนบได้สูงสุด ' + MAX_FILES + ' ไฟล์');
+    arr.slice(0, Math.max(room, 0)).forEach(function(f){
+      if (f.size > 25 * 1024 * 1024) { toast(f.name + ' ใหญ่เกินไป'); return; }
+      files.push({ file: f, url: /^image\//.test(f.type) ? URL.createObjectURL(f) : '' });
+    });
+    draw();
+  }
+  m.querySelector('#wf').onchange = function(){ addFiles(this.files); this.value = ''; };
+  m.querySelector('#wcam').onchange = function(){ addFiles(this.files); this.value = ''; };
+  m.querySelector('#wlist').onclick = function(e){ var b = e.target.closest('[data-rm]'); if (!b || busy) return; var x = files.splice(Number(b.dataset.rm), 1)[0]; if (x && x.url) URL.revokeObjectURL(x.url); draw(); };
+  m.querySelector('#wc').onclick = function(){ if (busy) return; files.forEach(function(x){ if (x.url) URL.revokeObjectURL(x.url); }); m.remove(); };
   m.querySelector('#ws').onclick = function(){
-    var btn = this; btn.disabled = true; btn.textContent = 'กำลังส่ง...';
-    var f = m.querySelector('#wf').files[0];
-    var send = function(file){
-      call('submitWork', { token: S.token, taskId: id, link: m.querySelector('#wl').value, note: m.querySelector('#wn').value, file: file })
-        .then(function(){ m.remove(); toast('ส่งงานเรียบร้อย'); loadHome().then(function(){ go('tasks'); }); })
-        .catch(function(e){ fail(e); btn.disabled = false; btn.textContent = 'ส่งงาน'; });
-    };
-    if (!f) return send(null);
-    if (f.size > 10 * 1024 * 1024) { toast('ไฟล์ใหญ่เกิน 10 MB'); btn.disabled = false; btn.textContent = 'ส่งงาน'; return; }
-    var rd = new FileReader();
-    rd.onload = function(){ send({ name: f.name, mime: f.type, data: String(rd.result).split(',')[1] }); };
-    rd.readAsDataURL(f);
+    if (busy) return;
+    var btn = this, prog = m.querySelector('#wprog');
+    var keep = m.querySelector('#wk') && m.querySelector('#wk').checked;
+    var own = m.querySelector('#wl').value.trim(), note = m.querySelector('#wn').value;
+    if (!files.length && !own && !note.trim() && !keep) { toast('กรุณาแนบรูป ไฟล์ ลิงก์ หรือข้อความอย่างน้อย 1 อย่าง'); return; }
+    busy = true; btn.disabled = true; btn.textContent = 'กำลังส่ง...'; draw();
+    var maxMb = 10, urls = [];
+    var chain = Promise.resolve();
+    files.forEach(function(x, i){
+      chain = chain.then(function(){
+        prog.textContent = 'กำลังอัปโหลดไฟล์ ' + (i + 1) + '/' + files.length + ' …';
+        return shrinkImage(x.file).then(function(f){
+          if (f.size > maxMb * 1024 * 1024) throw new Error(f.name + ' ใหญ่เกิน ' + maxMb + ' MB');
+          return readB64(f).then(function(data){
+            return call('uploadWork', { token: S.token, taskId: id, index: i + 1, file: { name: f.name, mime: f.type, data: data } });
+          });
+        }).then(function(r){ urls.push(r.url); });
+      });
+    });
+    chain.then(function(){
+      prog.textContent = 'กำลังบันทึกการส่งงาน…';
+      var link = [own].concat(keep ? prevLinks : []).filter(String).join(' ');
+      return call('submitWork', { token: S.token, taskId: id, link: link, files: urls, note: note });
+    }).then(function(){
+      files.forEach(function(x){ if (x.url) URL.revokeObjectURL(x.url); });
+      m.remove(); toast('ส่งงานเรียบร้อย' + (urls.length ? ' (' + urls.length + ' ไฟล์)' : '')); loadHome().then(function(){ go('tasks'); });
+    }).catch(function(e){
+      busy = false; fail(e); btn.disabled = false; btn.textContent = 'ส่งงาน';
+      prog.textContent = urls.length ? 'อัปโหลดสำเร็จ ' + urls.length + '/' + files.length + ' ไฟล์ — กดส่งงานอีกครั้ง' : '';
+      // ไฟล์ที่อัปโหลดสำเร็จแล้วไม่ต้องอัปซ้ำ
+      if (urls.length) { files.splice(0, urls.length); var done = urls.slice(); var own0 = m.querySelector('#wl'); own0.value = [own0.value.trim()].concat(done).filter(String).join(' '); }
+      draw();
+    });
   };
 }
 
@@ -723,7 +810,11 @@ function tInbox(){
   call('tSubmissions', { token: S.tToken, filter: f }).then(function(list){
     if (!list.length) { $('#iv').innerHTML = '<div class="card muted">ไม่มีรายการ</div>'; return; }
     $('#iv').innerHTML = list.map(function(x, i){
-      var links = String(x.link || '').split(/\s+/).filter(String).map(function(u, k){ return '<a href="' + esc(u) + '" target="_blank" class="btn soft sm">เปิดงาน ' + (k + 1) + '</a>'; }).join(' ');
+      var links = String(x.link || '').split(/\s+/).filter(String).map(function(u, k){
+        // ไฟล์ใน Drive: แสดงภาพย่อ (เห็นได้เมื่อเบราว์เซอร์ล็อกอินบัญชีครู) ถ้าโหลดไม่ได้จะเหลือแค่ปุ่ม
+        var fid = (u.match(/\/d\/([\w-]{20,})/) || u.match(/[?&]id=([\w-]{20,})/) || [])[1];
+        return '<a href="' + esc(u) + '" target="_blank" class="btn soft sm thumbl">' + (fid ? '<img src="https://drive.google.com/thumbnail?id=' + esc(fid) + '&sz=w200" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">' : '') + 'เปิดงาน ' + (k + 1) + '</a>';
+      }).join(' ');
       return '<div class="card"><div class="row"><div class="grow"><b>' + esc(x.cls) + ' · ' + esc(x.name) + '</b><div class="muted small">' + esc(x.col) + ' · ' + esc(x.taskTitle) + ' · ส่งเมื่อ ' + fmtTime(x.time) + '</div></div><span class="chip ' + (x.status === 'ตรวจแล้ว' ? 's-graded' : x.status === 'ให้แก้ไข' ? 's-revise' : 's-submitted') + '">' + esc(x.status) + '</span></div>' +
         (x.note ? '<p class="small" style="margin:8px 0">“' + esc(x.note) + '”</p>' : '') + '<div class="row" style="margin:8px 0">' + links + '</div>' +
         rubricPicker(x.rubric, i) +
